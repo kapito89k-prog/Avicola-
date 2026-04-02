@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Avicola Don Daniel</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde:#16a34a;--verde-light:#dcfce7;--verde-dark:#14532d;
+  --rojo:#dc2626;--rojo-light:#fee2e2;
+  --azul:#2563eb;--azul-light:#dbeafe;
+  --naranja:#ea580c;--naranja-light:#ffedd5;
+  --morado:#7c3aed;--morado-light:#ede9fe;
+  --cyan:#0891b2;--cyan-light:#cffafe;
+  --gris:#f1f5f9;--gris2:#e2e8f0;--gris3:#94a3b8;
+  --texto:#1e293b;
+  --sombra:0 2px 12px rgba(0,0,0,.10);
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f8fafc;color:var(--texto);min-height:100vh}
+
+nav{background:var(--verde-dark);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.nav-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 4px}
+.nav-title{color:white;font-size:1.05rem;font-weight:700}
+.db-badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(74,222,128,.2);color:#4ade80}
+.nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:none;border:none;color:rgba(255,255,255,.55);padding:8px 12px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.tab-btn.active{color:white;border-bottom-color:#4ade80}
+
+.section{display:none;padding:16px;max-width:600px;margin:0 auto}
+.section.active{display:block}
+.card{background:white;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--sombra)}
+.card-title{font-size:.77rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gris3);margin-bottom:12px}
+
+.stock-hero{background:var(--azul);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:14px;box-shadow:0 4px 20px rgba(37,99,235,.35)}
+.stock-hero-label{color:rgba(255,255,255,.85);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.stock-hero-num{color:white;font-size:3rem;font-weight:900;line-height:1}
+.stock-hero-sub{color:rgba(255,255,255,.7);font-size:.75rem;margin-top:5px}
+.ganancia-box{background:var(--verde);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:14px;box-shadow:0 4px 20px rgba(22,163,74,.35)}
+.ganancia-box.negativa{background:var(--rojo);box-shadow:0 4px 20px rgba(220,38,38,.35)}
+.ganancia-label{color:rgba(255,255,255,.85);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.ganancia-monto{color:white;font-size:2.5rem;font-weight:800;line-height:1}
+.ganancia-sub{color:rgba(255,255,255,.7);font-size:.75rem;margin-top:5px}
+
+.banner{border-radius:12px;padding:12px 16px;margin-bottom:14px}
+.banner-naranja{background:var(--naranja-light);border:2px solid var(--naranja)}
+.banner-naranja p{font-size:.85rem;font-weight:700;color:#9a3412}
+.banner-naranja small{font-size:.75rem;color:#c2410c}
+
+.input-group{margin-bottom:12px}
+.input-group label{display:block;font-size:.8rem;font-weight:600;color:var(--gris3);margin-bottom:4px}
+.input-group input{width:100%;padding:13px 14px;border:2px solid var(--gris2);border-radius:10px;font-size:1rem;color:var(--texto);background:var(--gris);transition:border .2s;-webkit-appearance:none}
+.input-group input:focus{outline:none;border-color:var(--verde);background:white}
+.input-group input:disabled{opacity:.45;cursor:not-allowed}
+.input-hint{font-size:.72rem;color:var(--gris3);margin-top:3px}
+
+.btn{width:100%;padding:15px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-verde{background:var(--verde);color:white}.btn-verde:active:not(:disabled){background:var(--verde-dark);transform:scale(.98)}
+.btn-rojo{background:var(--rojo);color:white}.btn-rojo:active{transform:scale(.98)}
+.btn-azul{background:var(--azul);color:white}.btn-azul:active{transform:scale(.98)}
+.btn-naranja{background:var(--naranja);color:white}.btn-naranja:active{transform:scale(.98)}
+.btn-morado{background:var(--morado);color:white}.btn-morado:active{transform:scale(.98)}
+.btn-cyan{background:var(--cyan);color:white}.btn-cyan:active{transform:scale(.98)}
+.btn-gris{background:var(--gris2);color:var(--texto)}
+.btn-cerrar{background:linear-gradient(135deg,#ea580c,#dc2626);color:white;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(220,38,38,.28)}
+.btn-cerrar:active:not(:disabled){transform:scale(.98)}
+.btn-wsp{background:#25D366;color:white;display:flex;align-items:center;justify-content:center;gap:10px;font-size:1rem}
+.btn-wsp:active{background:#128C7E;transform:scale(.98)}
+.btn-export{background:linear-gradient(135deg,var(--morado),var(--azul));color:white;display:flex;align-items:center;justify-content:center;gap:10px;font-size:1rem;box-shadow:0 4px 14px rgba(124,58,237,.25)}
+.btn-export:active{transform:scale(.98)}
+.btn-sm{padding:8px 14px;width:auto;font-size:.82rem;border-radius:8px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.compra-box{background:var(--azul-light);border:2px solid var(--azul);border-radius:14px;padding:16px;margin-bottom:14px}
+.compra-box .card-title{color:var(--azul)}
+
+.total-row{display:flex;justify-content:space-between;padding:8px 0}
+.total-row.destacado{font-weight:700;border-top:2px solid var(--gris2);margin-top:4px;padding-top:10px}
+.total-row.costo-line{color:var(--gris3);font-size:.82rem}
+.total-row.stock-line{color:var(--azul);font-size:.82rem}
+.historia-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris2)}
+.historia-item:last-child{border-bottom:none}
+.historia-gan.pos{color:var(--verde);font-weight:700}
+.historia-gan.neg{color:var(--rojo);font-weight:700}
+.corte-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gris2)}
+.corte-row:last-child{border-bottom:none}
+.corte-nombre{font-weight:600;font-size:.9rem}
+.corte-detalle{font-size:.75rem;color:var(--gris3);margin-top:2px}
+.corte-ganancia{font-weight:700;font-size:1rem;color:var(--verde)}
+.proveedor-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--gris2)}
+.proveedor-item:last-child{border-bottom:none}
+.proveedor-info{flex:1}
+.proveedor-nombre{font-weight:600;font-size:.9rem}
+.proveedor-detalle{font-size:.75rem;color:var(--gris3)}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700}
+.badge-pagado{background:var(--verde-light);color:var(--verde-dark)}
+.badge-pendiente{background:var(--rojo-light);color:var(--rojo)}
+.proveedor-monto{font-weight:700;font-size:.95rem}
+.proveedor-monto.pendiente{color:var(--rojo)}
+.proveedor-monto.pagado{color:var(--verde)}
+.btn-toggle{background:none;border:none;font-size:1.3rem;cursor:pointer;padding:4px}
+.btn-delete{background:none;border:none;font-size:1rem;cursor:pointer;color:var(--gris3);padding:4px}
+
+.config-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.config-row label{flex:1;font-size:.85rem;font-weight:600}
+.config-row input{width:120px;padding:10px;border:2px solid var(--gris2);border-radius:8px;font-size:.9rem;text-align:right}
+.config-row input:focus{outline:none;border-color:var(--verde)}
+
+.deuda-total{font-size:1.3rem;font-weight:800;color:var(--rojo)}
+.empty-msg{text-align:center;color:var(--gris3);padding:24px 0;font-size:.9rem}
+.rinde-pill{display:inline-block;background:#fef9c3;color:#ca8a04;border-radius:8px;padding:3px 8px;font-size:.72rem;font-weight:700;margin-bottom:8px}
+.formula-box{background:var(--gris);border-radius:10px;padding:12px;font-size:.82rem;line-height:1.7;color:#334155;margin-top:10px}
+.formula-box b{color:var(--verde-dark)}
+.db-stat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(124,58,237,.12)}
+.db-stat:last-child{border-bottom:none}
+.db-stat-label{font-size:.85rem;color:#4c1d95}
+.db-stat-val{font-weight:700;color:var(--morado);font-size:.95rem}
+
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:14px}
+.loading-overlay p{font-weight:600;color:var(--verde-dark);font-size:.95rem}
+.spinner{width:42px;height:42px;border:4px solid var(--gris2);border-top-color:var(--verde);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120px);background:#1e293b;color:white;padding:11px 20px;border-radius:12px;font-size:.88rem;font-weight:600;transition:transform .3s;z-index:998;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+#pin-screen{position:fixed;inset:0;z-index:2000;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:0}
+.pin-logo{font-size:2rem;font-weight:800;color:var(--verde-dark);margin-bottom:4px}
+.pin-sub{font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gris3);margin-bottom:36px}
+.pin-dots{display:flex;gap:14px;margin-bottom:32px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--verde);background:transparent;transition:background .15s,transform .15s}
+.pin-dot.on{background:var(--verde);transform:scale(1.25)}
+.pin-dots.shake{animation:pinShake .35s ease}
+.pin-dots.shake .pin-dot{border-color:var(--rojo)}
+@keyframes pinShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes crossPop{0%{opacity:0;transform:scale(0) rotate(-20deg)}60%{transform:scale(1.2) rotate(5deg)}100%{opacity:1;transform:scale(1) rotate(0deg)}}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+#cierre-overlay{position:fixed;inset:0;z-index:1500;background:#f8fafc;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center}
+.co-icon{font-size:4rem;animation:crossPop .6s cubic-bezier(.34,1.56,.64,1) both}
+.co-l1{font-size:1.45rem;font-weight:800;color:var(--verde-dark);margin-top:18px;animation:fadeSlide .5s ease .4s both}
+.co-l2{font-size:1.1rem;font-weight:700;color:var(--verde);margin-top:10px;animation:fadeSlide .5s ease .8s both}
+.co-l3{font-size:1rem;color:var(--gris3);margin-top:8px;animation:fadeSlide .5s ease 1.1s both}
+.pin-grid{display:grid;grid-template-columns:repeat(3,74px);gap:11px}
+.pin-key{height:74px;background:white;border:1.5px solid var(--gris2);border-radius:14px;font-size:1.6rem;font-weight:700;color:var(--texto);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:background .12s,transform .1s}
+.pin-key:active{background:var(--verde-light);transform:scale(.93)}
+.pin-key.del{font-size:1rem;color:var(--gris3)}
+.pin-key.del:active{background:var(--rojo-light);color:var(--rojo)}
+.pin-key.empty{visibility:hidden;pointer-events:none}
+
+/* DESPOSTE */
+.desposte-hero{background:linear-gradient(135deg,var(--cyan),#0e7490);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:14px;box-shadow:0 4px 20px rgba(8,145,178,.35)}
+.desposte-hero-label{color:rgba(255,255,255,.85);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.desposte-hero-num{color:white;font-size:2.5rem;font-weight:800;line-height:1}
+.desposte-hero-sub{color:rgba(255,255,255,.7);font-size:.75rem;margin-top:5px}
+.wizard-card{background:white;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--sombra);border-top:4px solid var(--cyan)}
+.wizard-step{display:none}
+.wizard-step.active{display:block}
+.step-label{display:inline-block;background:var(--cyan);color:white;border-radius:20px;padding:3px 12px;font-size:.72rem;font-weight:700;margin-bottom:10px}
+.kilos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.kilo-box{border-radius:12px;padding:12px;border:2px solid var(--gris2)}
+.kilo-box label{display:block;font-size:.75rem;font-weight:700;color:var(--gris3);margin-bottom:6px}
+.kilo-box input{width:100%;background:transparent;border:none;font-size:1.3rem;font-weight:800;color:var(--texto);outline:none}
+.kilo-box.suprema{border-color:#f97316;background:#fff7ed}
+.kilo-box.pym{border-color:#22c55e;background:#f0fdf4}
+.kilo-box.alitas{border-color:#eab308;background:#fefce8}
+.kilo-box.menudo{border-color:#a855f7;background:#faf5ff}
+.kg-total-pill{background:var(--cyan-light);border:2px solid var(--cyan);border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.88rem;font-weight:600;color:#0e7490}
+.kg-total-pill span:last-child{font-size:1.1rem;font-weight:800}
+.resultado-box{background:linear-gradient(135deg,var(--verde-dark),#15803d);border-radius:16px;padding:20px;text-align:center;margin-bottom:14px;box-shadow:0 4px 20px rgba(22,163,74,.35)}
+.resultado-box.negativo{background:linear-gradient(135deg,#991b1b,var(--rojo))}
+.resultado-label{color:rgba(255,255,255,.85);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.resultado-monto{color:white;font-size:2.8rem;font-weight:900;line-height:1}
+.resultado-sub{color:rgba(255,255,255,.7);font-size:.75rem;margin-top:6px}
+.tanda-item{padding:12px 0;border-bottom:1px solid var(--gris2)}
+.tanda-item:last-child{border-bottom:none}
+.tanda-header{display:flex;justify-content:space-between;align-items:center}
+.tanda-titulo{font-weight:700;font-size:.9rem}
+.tanda-gan{font-weight:800;font-size:1rem}
+.tanda-gan.pos{color:var(--verde)}
+.tanda-gan.neg{color:var(--rojo)}
+.tanda-detalle{font-size:.75rem;color:var(--gris3);margin-top:3px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.stat-box{background:var(--cyan-light);border:2px solid #a5f3fc;border-radius:12px;padding:12px;text-align:center}
+.stat-num{font-size:1.4rem;font-weight:800;color:var(--cyan)}
+.stat-lbl{font-size:.7rem;color:#0e7490;margin-top:2px;font-weight:600}
+.stock-warning{background:var(--rojo-light);border:2px solid var(--rojo);border-radius:10px;padding:10px 14px;font-size:.82rem;font-weight:600;color:var(--rojo);margin-bottom:10px}
+.stock-ok{background:var(--verde-light);border:2px solid var(--verde);border-radius:10px;padding:10px 14px;font-size:.82rem;font-weight:600;color:var(--verde-dark);margin-bottom:10px}
+
+/* ══ STOCK DE TROZADO ══ */
+.trozado-hero{background:linear-gradient(135deg,#7c3aed,#0891b2);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 4px 20px rgba(124,58,237,.3)}
+.trozado-hero-label{color:rgba(255,255,255,.85);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.trozado-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.trozado-pill{border-radius:12px;padding:12px 10px;text-align:center;background:rgba(255,255,255,.15);backdrop-filter:blur(4px)}
+.trozado-pill-icon{font-size:1.3rem}
+.trozado-pill-nombre{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.trozado-pill-kg{font-size:1.4rem;font-weight:900;color:white;line-height:1;margin-top:3px}
+.trozado-pill-kg small{font-size:.75rem;font-weight:600;opacity:.8}
+
+.trozado-form-card{background:white;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--sombra);border-top:4px solid var(--morado)}
+.trozado-kilos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.trozado-input-box{border-radius:12px;padding:12px;border:2px solid var(--gris2);background:var(--gris)}
+.trozado-input-box.suprema{border-color:#f97316;background:#fff7ed}
+.trozado-input-box.pym{border-color:#22c55e;background:#f0fdf4}
+.trozado-input-box.alitas{border-color:#eab308;background:#fefce8}
+.trozado-input-box.menudo{border-color:#a855f7;background:#faf5ff}
+.trozado-input-box label{display:block;font-size:.72rem;font-weight:700;color:var(--gris3);margin-bottom:6px}
+.trozado-input-box input{width:100%;background:transparent;border:none;font-size:1.2rem;font-weight:800;color:var(--texto);outline:none}
+
+.trozado-mov-item{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--gris2)}
+.trozado-mov-item:last-child{border-bottom:none}
+.trozado-mov-detalle{font-size:.8rem;font-weight:600}
+.trozado-mov-sub{font-size:.72rem;color:var(--gris3);margin-top:2px}
+.trozado-mov-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.trozado-tag{font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:8px}
+.trozado-tag.sup{background:#fff7ed;color:#ea580c}
+.trozado-tag.pym{background:#f0fdf4;color:#16a34a}
+.trozado-tag.ali{background:#fefce8;color:#ca8a04}
+.trozado-tag.men{background:#faf5ff;color:#7c3aed}
+.trozado-tag.neg{background:var(--rojo-light);color:var(--rojo)}
+
+.auto-tag{display:inline-flex;align-items:center;gap:4px;background:var(--cyan-light);border:1px solid var(--cyan);color:#0e7490;border-radius:8px;padding:3px 8px;font-size:.68rem;font-weight:700;margin-left:6px}
+</style>
+</head>
+<body>
+
+<div id="pin-screen">
+  <div class="pin-logo">🐔 Avicola Don Daniel</div>
+  <div class="pin-sub">Ingresa tu PIN</div>
+  <div class="pin-dots" id="pin-dots">
+    <div class="pin-dot" id="pd0"></div>
+    <div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div>
+    <div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-grid">
+    <button class="pin-key" onclick="pinKey('1')">1</button>
+    <button class="pin-key" onclick="pinKey('2')">2</button>
+    <button class="pin-key" onclick="pinKey('3')">3</button>
+    <button class="pin-key" onclick="pinKey('4')">4</button>
+    <button class="pin-key" onclick="pinKey('5')">5</button>
+    <button class="pin-key" onclick="pinKey('6')">6</button>
+    <button class="pin-key" onclick="pinKey('7')">7</button>
+    <button class="pin-key" onclick="pinKey('8')">8</button>
+    <button class="pin-key" onclick="pinKey('9')">9</button>
+    <button class="pin-key empty" disabled></button>
+    <button class="pin-key" onclick="pinKey('0')">0</button>
+    <button class="pin-key del" onclick="pinDel()">⌫</button>
+  </div>
+</div>
+
+<div id="cierre-overlay">
+  <div class="co-icon">🌅</div>
+  <div class="co-l1">¡Buena jornada, Dani!<br>A descansar.</div>
+  <div class="co-l2">¡Explotó la pollería hoy! 🚀</div>
+  <div class="co-l3">Mañana seguimos firme.</div>
+</div>
+
+<div id="loading-overlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <p>Iniciando base de datos...</p>
+</div>
+<div id="toast" class="toast"></div>
+
+<nav>
+  <div class="nav-header">
+    <div class="nav-title">🐔 Avicola Don Daniel</div>
+    <div class="db-badge">💾 DB Local</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('diario',this)">📊 Diario</button>
+    <button class="tab-btn" onclick="showTab('stock',this)">🧊 Stock</button>
+    <button class="tab-btn" onclick="showTab('cortes',this)">🔪 Cortes</button>
+    <button class="tab-btn" onclick="showTab('desposte',this)">🥩 Desposte</button>
+    <button class="tab-btn" onclick="showTab('proveedores',this)">🚚 Proveed.</button>
+    <button class="tab-btn" onclick="showTab('historial',this)">📅 Historial</button>
+    <button class="tab-btn" onclick="showTab('datos',this)">💾 Datos</button>
+    <button class="tab-btn" onclick="showTab('config',this)">⚙️ Precios</button>
+  </div>
+</nav>
+
+<!-- DIARIO -->
+<div id="tab-diario" class="section active">
+  <div class="stock-hero">
+    <div class="stock-hero-label">🧊 Cajones en Heladera</div>
+    <div class="stock-hero-num" id="hero-stock">--</div>
+    <div class="stock-hero-sub" id="hero-stock-sub">Cargando...</div>
+  </div>
+  <div id="dia-cerrado-banner" class="banner banner-naranja" style="display:none">
+    <p>🔒 El dia de hoy ya fue cerrado</p>
+    <small>Abri la app manana para empezar un nuevo dia</small>
+  </div>
+  <div id="ganancia-display" class="ganancia-box">
+    <div class="ganancia-label">💰 Ganancia Limpia del Dia</div>
+    <div class="ganancia-monto" id="gan-monto">$0</div>
+    <div class="ganancia-sub" id="gan-sub">Ingresa los cajones cortados y las ventas</div>
+  </div>
+  <div class="compra-box">
+    <div class="card-title">➕ Cargar Compra al Stock</div>
+    <div style="display:flex;gap:10px">
+      <div class="input-group" style="flex:1"><label>Cajones</label><input type="number" id="compra-cajones" placeholder="50" inputmode="numeric"></div>
+      <div class="input-group" style="flex:1"><label>Costo x Caj ($)</label><input type="number" id="compra-costo" placeholder="61500" inputmode="numeric"></div>
+    </div>
+    <button class="btn btn-azul" onclick="cargarCompra()">📦 Sumar al Stock</button>
+  </div>
+  <div class="card">
+    <div class="card-title">🔴 Consumo del Dia</div>
+    <div class="input-group">
+      <label>Cajones Cortados Hoy</label>
+      <input type="number" id="cajones" placeholder="ej. 10" inputmode="numeric" oninput="calcular()">
+      <div class="input-hint">Solo los que se cortaron y vendieron en mostrador</div>
+    </div>
+    <div class="input-group">
+      <label>Costo x Cajon ($)</label>
+      <input type="number" id="costo-cajon" placeholder="ej. 61500" inputmode="numeric" oninput="calcular()">
+    </div>
+    <div class="input-group">
+      <label>Venta Mostrador ($)</label>
+      <input type="number" id="venta-mostrador" placeholder="ej. 850000" inputmode="numeric" oninput="calcular()">
+    </div>
+    <div class="input-group">
+      <label>Venta Enteros (cajones)</label>
+      <input type="number" id="venta-enteros" placeholder="ej. 3" inputmode="numeric" oninput="calcular()">
+      <div class="input-hint">Se restan del stock al guardar</div>
+    </div>
+    <div class="row2">
+      <button class="btn btn-verde" id="btn-guardar" onclick="guardarDia()">✅ Guardar Dia</button>
+      <button class="btn btn-cerrar" id="btn-cerrar" onclick="cerrarDia()">🔒 Cerrar Dia</button>
+    </div>
+  </div>
+  <button class="btn btn-wsp" onclick="enviarWhatsApp()" style="margin-bottom:14px">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    Enviar Reporte a Benja
+  </button>
+  <div class="card" id="card-desglose" style="display:none">
+    <div class="card-title">Desglose del Dia</div>
+    <div class="total-row"><span>Venta Mostrador</span><span id="d-mostrador">$0</span></div>
+    <div class="total-row"><span>Venta Enteros</span><span id="d-enteros">$0</span></div>
+    <div class="total-row destacado"><span>Total Ingreso</span><span id="d-ingreso">$0</span></div>
+    <div class="total-row costo-line"><span id="d-costo-lbl">Costo procesado</span><span id="d-costo-val">$0</span></div>
+    <div class="total-row" style="color:var(--rojo)"><span><b>Costo Total</b></span><span id="d-costo"><b>$0</b></span></div>
+    <div class="total-row destacado"><span style="font-size:1rem">GANANCIA</span><span id="d-gan" style="font-size:1rem">$0</span></div>
+    <div class="total-row stock-line" id="d-stock-row" style="display:none"><span>Stock al guardar</span><span id="d-stock-val" style="font-weight:700">--</span></div>
+    <div id="d-check" style="display:none;font-size:.74rem;color:var(--gris3);margin-top:8px;padding-top:8px;border-top:1px solid var(--gris2)"></div>
+    <div class="formula-box"><b>Formula:</b><br>Costo = (Cortados + Enteros) x Costo/Caj<br>Ganancia = Mostrador + (Enteros x Precio) - Costo</div>
+  </div>
+</div>
+
+<!-- STOCK -->
+<div id="tab-stock" class="section">
+
+  <!-- HERO CAJONES -->
+  <div class="stock-hero">
+    <div class="stock-hero-label">🧊 Stock Cajones Enteros</div>
+    <div class="stock-hero-num" id="stock-num-big">--</div>
+    <div class="stock-hero-sub">cajones en heladera</div>
+  </div>
+
+  <!-- HERO TROZADO -->
+  <div class="trozado-hero">
+    <div class="trozado-hero-label">🔪 Stock de Trozado (kilos)</div>
+    <div class="trozado-grid">
+      <div class="trozado-pill">
+        <div class="trozado-pill-icon">🥩</div>
+        <div class="trozado-pill-nombre">Suprema</div>
+        <div class="trozado-pill-kg" id="troz-disp-sup">0<small> kg</small></div>
+      </div>
+      <div class="trozado-pill">
+        <div class="trozado-pill-icon">🍗</div>
+        <div class="trozado-pill-nombre">Pata y Muslo</div>
+        <div class="trozado-pill-kg" id="troz-disp-pym">0<small> kg</small></div>
+      </div>
+      <div class="trozado-pill">
+        <div class="trozado-pill-icon">🍖</div>
+        <div class="trozado-pill-nombre">Alitas</div>
+        <div class="trozado-pill-kg" id="troz-disp-ali">0<small> kg</small></div>
+      </div>
+      <div class="trozado-pill">
+        <div class="trozado-pill-icon">🫀</div>
+        <div class="trozado-pill-nombre">Menudo</div>
+        <div class="trozado-pill-kg" id="troz-disp-men">0<small> kg</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NUEVA COMPRA CAJONES -->
+  <div class="card">
+    <div class="card-title">➕ Nueva Compra (Cajones)</div>
+    <div class="input-group"><label>Cajones Comprados</label><input type="number" id="s-compra-cajones" placeholder="ej. 50" inputmode="numeric"></div>
+    <div class="input-group"><label>Costo x Cajon ($)</label><input type="number" id="s-compra-costo" placeholder="ej. 61500" inputmode="numeric"></div>
+    <div class="input-group"><label>Proveedor (opcional)</label><input type="text" id="s-compra-prov" placeholder="ej. Don Ricardo"></div>
+    <button class="btn btn-azul" onclick="cargarCompraStock()">📦 Sumar al Stock</button>
+  </div>
+
+  <!-- CARGAR TROZADO -->
+  <div class="trozado-form-card">
+    <div class="card-title" style="color:var(--morado)">🔪 Agregar Stock de Trozado</div>
+    <p style="font-size:.8rem;color:var(--gris3);margin-bottom:14px">Ingresá los kilos disponibles por corte (se suman al stock actual de trozado)</p>
+    <div class="trozado-kilos-grid">
+      <div class="trozado-input-box suprema">
+        <label>🥩 Suprema (kg)</label>
+        <input type="number" id="troz-inp-sup" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="trozado-input-box pym">
+        <label>🍗 Pata y Muslo (kg)</label>
+        <input type="number" id="troz-inp-pym" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="trozado-input-box alitas">
+        <label>🍖 Alitas (kg)</label>
+        <input type="number" id="troz-inp-ali" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="trozado-input-box menudo">
+        <label>🫀 Menudo (kg)</label>
+        <input type="number" id="troz-inp-men" placeholder="0" inputmode="decimal">
+      </div>
+    </div>
+    <button class="btn btn-morado" onclick="agregarTrozado()">➕ Sumar al Stock de Trozado</button>
+  </div>
+
+  <!-- AJUSTE MANUAL TROZADO -->
+  <div class="card">
+    <div class="card-title" style="color:var(--naranja)">✏️ Corrección Manual de Trozado</div>
+    <p style="font-size:.8rem;color:var(--gris3);margin-bottom:12px">Establecé el stock exacto de cada corte (reemplaza el valor actual)</p>
+    <div class="trozado-kilos-grid">
+      <div class="trozado-input-box suprema">
+        <label>🥩 Suprema (kg)</label>
+        <input type="number" id="troz-adj-sup" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="trozado-input-box pym">
+        <label>🍗 Pata y Muslo (kg)</label>
+        <input type="number" id="troz-adj-pym" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="trozado-input-box alitas">
+        <label>🍖 Alitas (kg)</label>
+        <input type="number" id="troz-adj-ali" placeholder="0" inputmode="decimal">
+      </div>
+      <div class="trozado-input-box menudo">
+        <label>🫀 Menudo (kg)</label>
+        <input type="number" id="troz-adj-men" placeholder="0" inputmode="decimal">
+      </div>
+    </div>
+    <button class="btn btn-naranja" onclick="ajustarTrozadoManual()">✏️ Establecer Stock Exacto</button>
+  </div>
+
+  <!-- AJUSTE CAJONES MANUAL -->
+  <div class="card">
+    <div class="card-title">✏️ Ajuste Manual de Cajones</div>
+    <div class="input-group"><label>Establecer stock en:</label><input type="number" id="stock-manual" placeholder="ej. 23" inputmode="numeric"></div>
+    <button class="btn btn-naranja" onclick="ajustarStockManual()">Actualizar Stock Cajones</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Historial de Movimientos</div>
+    <div id="stock-movimientos"><div class="empty-msg">Sin movimientos</div></div>
+  </div>
+</div>
+
+<!-- CORTES -->
+<div id="tab-cortes" class="section">
+  <div class="card">
+    <div class="card-title">Kilos por Corte — Papelito Azul</div>
+    <div class="rinde-pill">Rinde estimado por cajon de 20 kg</div>
+    <div class="input-group"><label>Cajones del dia</label><input type="number" id="c-cajones" placeholder="ej. 10" inputmode="numeric" oninput="calcularCortes()"></div>
+    <div id="cortes-lista"></div>
+  </div>
+  <div class="card" id="card-totales-corte" style="display:none">
+    <div class="card-title">Ganancia por Corte</div>
+    <div id="cortes-resultado"></div>
+    <div class="total-row destacado"><span>Total Estimado</span><span id="total-cortes-gan" style="color:var(--verde);font-size:1.1rem">$0</span></div>
+  </div>
+</div>
+
+<!-- DESPOSTE -->
+<div id="tab-desposte" class="section">
+  <div class="desposte-hero">
+    <div class="desposte-hero-label">🔪 Modulo de Desposte</div>
+    <div class="desposte-hero-num" id="des-hero-num">$0</div>
+    <div class="desposte-hero-sub" id="des-hero-sub">Ganancia de la ultima tanda</div>
+  </div>
+
+  <button class="btn btn-cyan" id="btn-iniciar-des" onclick="iniciarDesposte()" style="margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px">
+    🔪 Iniciar Nueva Tanda de Desposte
+  </button>
+
+  <div id="desposte-wizard" style="display:none">
+    <div class="wizard-card">
+      <!-- PASO 1 -->
+      <div class="wizard-step active" id="des-step1">
+        <div class="step-label">PASO 1 DE 3 — Cajones a cortar</div>
+        <div class="input-group">
+          <label>¿Cuantos cajones vas a cortar?</label>
+          <input type="number" id="des-cajones" placeholder="ej. 10" inputmode="numeric" oninput="desPreviewStock()">
+          <div class="input-hint">Se restarán del stock automáticamente al guardar</div>
+        </div>
+        <div class="input-group">
+          <label>Costo x Cajon ($)</label>
+          <input type="number" id="des-costo" placeholder="ej. 61500" inputmode="numeric">
+          <div class="input-hint">Se autocompleta con el precio en Config</div>
+        </div>
+        <div id="des-stock-preview"></div>
+        <button class="btn btn-cyan" onclick="desPaso2()">Siguiente →</button>
+        <button class="btn btn-gris" onclick="cancelarDesposte()" style="margin-top:8px">Cancelar</button>
+      </div>
+      <!-- PASO 2 -->
+      <div class="wizard-step" id="des-step2">
+        <div class="step-label">PASO 2 DE 3 — Kilos por corte</div>
+        <div class="rinde-pill" id="des-step2-sub">Tanda de -- cajones</div>
+        <div class="kilos-grid">
+          <div class="kilo-box suprema"><label>🥩 Suprema (kg)</label><input type="number" id="des-kg-sup" placeholder="0" inputmode="decimal" oninput="desActualizarKgTotal()"></div>
+          <div class="kilo-box pym"><label>🍗 Pata y Muslo (kg)</label><input type="number" id="des-kg-pym" placeholder="0" inputmode="decimal" oninput="desActualizarKgTotal()"></div>
+          <div class="kilo-box alitas"><label>🍖 Alitas (kg)</label><input type="number" id="des-kg-ali" placeholder="0" inputmode="decimal" oninput="desActualizarKgTotal()"></div>
+          <div class="kilo-box menudo"><label>🫀 Menudo (kg)</label><input type="number" id="des-kg-men" placeholder="0" inputmode="decimal" oninput="desActualizarKgTotal()"></div>
+        </div>
+        <div class="kg-total-pill">
+          <span>Total kilos ingresados</span>
+          <span id="des-kg-total">0 kg</span>
+        </div>
+        <button class="btn btn-cyan" onclick="desPaso3()">Calcular Ganancia →</button>
+        <button class="btn btn-gris" onclick="desVolverPaso(1)" style="margin-top:8px">← Atrás</button>
+      </div>
+      <!-- PASO 3 -->
+      <div class="wizard-step" id="des-step3">
+        <div class="step-label">PASO 3 DE 3 — Resultado de la tanda</div>
+        <div class="resultado-box" id="des-resultado-box">
+          <div class="resultado-label">Ganancia Real de la Tanda</div>
+          <div class="resultado-monto" id="des-res-monto">$0</div>
+          <div class="resultado-sub" id="des-res-sub">-- cajones · -- kg</div>
+        </div>
+        <div class="card" style="margin-bottom:10px;box-shadow:none;border:2px solid var(--gris2)">
+          <div class="card-title">Desglose</div>
+          <div id="des-res-desglose"></div>
+        </div>
+        <!-- CHECKBOX AUTO-STOCK -->
+        <div style="background:var(--morado-light);border:2px solid var(--morado);border-radius:12px;padding:14px;margin-bottom:10px">
+          <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer">
+            <input type="checkbox" id="des-auto-stock" checked style="width:20px;height:20px;margin-top:2px;accent-color:var(--morado)">
+            <div>
+              <div style="font-size:.88rem;font-weight:700;color:var(--morado)">🔪 Agregar kilos al Stock de Trozado</div>
+              <div style="font-size:.75rem;color:#4c1d95;margin-top:2px">Los kilos de esta tanda se suman automáticamente al stock de trozado en la sección Stock</div>
+            </div>
+          </label>
+        </div>
+        <button class="btn btn-verde" onclick="guardarTanda()">💾 Guardar en Historial</button>
+        <button class="btn btn-gris" onclick="cancelarDesposte()" style="margin-top:8px">Descartar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Historial de Tandas</div>
+    <div id="des-historial"><div class="empty-msg">Todavia no hay tandas guardadas</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📈 Resumen Acumulado</div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-num" id="des-stat-tandas">0</div><div class="stat-lbl">Tandas realizadas</div></div>
+      <div class="stat-box"><div class="stat-num" id="des-stat-cajones">0</div><div class="stat-lbl">Cajones procesados</div></div>
+      <div class="stat-box"><div class="stat-num" id="des-stat-kg">0 kg</div><div class="stat-lbl">Kilos totales</div></div>
+      <div class="stat-box"><div class="stat-num" id="des-stat-gan">$0</div><div class="stat-lbl">Ganancia acumulada</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROVEEDORES -->
+<div id="tab-proveedores" class="section">
+  <div class="card" style="background:var(--rojo-light);border:2px solid var(--rojo)">
+    <div class="card-title" style="color:var(--rojo)">Deuda Total Pendiente</div>
+    <div class="deuda-total" id="deuda-total">$0</div>
+  </div>
+  <div class="card">
+    <div class="card-title">Nueva Compra</div>
+    <div class="input-group"><label>Proveedor</label><input type="text" id="p-nombre" placeholder="ej. Don Ricardo"></div>
+    <div class="input-group"><label>Detalle</label><input type="text" id="p-detalle" placeholder="ej. 50 cajones pollos"></div>
+    <div class="input-group"><label>Monto ($)</label><input type="number" id="p-monto" placeholder="ej. 3075000" inputmode="numeric"></div>
+    <div class="input-group"><label>Fecha</label><input type="date" id="p-fecha"></div>
+    <button class="btn btn-rojo" onclick="agregarProveedor()">Agregar Compra</button>
+  </div>
+  <div class="card">
+    <div class="card-title">Compras Registradas</div>
+    <div id="proveedores-lista"><div class="empty-msg">Sin compras registradas</div></div>
+  </div>
+</div>
+
+<!-- HISTORIAL -->
+<div id="tab-historial" class="section">
+  <div class="card">
+    <div class="card-title">Dias Guardados</div>
+    <div id="historial-lista"><div class="empty-msg">Todavia no guardaste ningun dia</div></div>
+  </div>
+  <div class="card" id="card-resumen-hist" style="display:none">
+    <div class="card-title">Resumen del Periodo</div>
+    <div class="total-row"><span>Dias registrados</span><span id="h-dias">0</span></div>
+    <div class="total-row"><span>Cajones procesados</span><span id="h-cajones">0</span></div>
+    <div class="total-row destacado"><span>Ganancia Total</span><span id="h-gan" style="color:var(--verde)">$0</span></div>
+    <div class="total-row"><span>Promedio por dia</span><span id="h-prom">$0</span></div>
+  </div>
+</div>
+
+<!-- DATOS -->
+<div id="tab-datos" class="section">
+  <div class="card" style="background:var(--morado-light);border:2px solid var(--morado)">
+    <div class="card-title" style="color:var(--morado)">💾 Base de Datos (IndexedDB)</div>
+    <div class="db-stat"><span class="db-stat-label">📅 Dias en historial</span><span class="db-stat-val" id="stat-historial">--</span></div>
+    <div class="db-stat"><span class="db-stat-label">🧊 Movimientos de stock</span><span class="db-stat-val" id="stat-stock">--</span></div>
+    <div class="db-stat"><span class="db-stat-label">🚚 Proveedores</span><span class="db-stat-val" id="stat-proveedores">--</span></div>
+    <div class="db-stat"><span class="db-stat-label">🔪 Tandas de desposte</span><span class="db-stat-val" id="stat-tandas">--</span></div>
+    <div class="db-stat"><span class="db-stat-label">🧊 Stock cajones</span><span class="db-stat-val" id="stat-stock-actual">--</span></div>
+    <div class="db-stat"><span class="db-stat-label">🔪 Stock trozado</span><span class="db-stat-val" id="stat-stock-trozado">--</span></div>
+  </div>
+  <button class="btn btn-export" onclick="exportarRespaldo()" style="margin-bottom:14px">📦 Descargar Respaldo JSON</button>
+  <div class="card">
+    <div class="card-title">📥 Restaurar Respaldo</div>
+    <p style="font-size:.82rem;color:var(--gris3);margin-bottom:10px">Carga un archivo .json para restaurar todos los datos. <b style="color:var(--rojo)">Reemplaza los datos actuales.</b></p>
+    <div class="input-group"><input type="file" id="import-file" accept=".json" style="background:white;border:2px dashed var(--gris2)"></div>
+    <button class="btn btn-naranja" onclick="importarRespaldo()">🔄 Restaurar desde Archivo</button>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color:var(--rojo)">⚠️ Zona de Peligro</div>
+    <p style="font-size:.82rem;color:var(--gris3);margin-bottom:10px">Borra todos los datos. No se puede deshacer.</p>
+    <button class="btn btn-rojo" onclick="borrarTodo()">🗑️ Borrar Todo y Empezar de Cero</button>
+  </div>
+</div>
+
+<!-- CONFIG -->
+<div id="tab-config" class="section">
+  <div class="card">
+    <div class="card-title">Precios de Referencia</div>
+    <div class="config-row"><label>Costo x Cajon ($)</label><input type="number" id="cfg-costo" inputmode="numeric" onchange="guardarConfig()"></div>
+    <div class="config-row"><label>Precio Venta Entero ($)</label><input type="number" id="cfg-entero" inputmode="numeric" onchange="guardarConfig()"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Precio Kg por Corte</div>
+    <div class="config-row"><label>Suprema</label><input type="number" id="cfg-suprema" inputmode="numeric" onchange="guardarConfig()"></div>
+    <div class="config-row"><label>Pata y Muslo</label><input type="number" id="cfg-patamuslo" inputmode="numeric" onchange="guardarConfig()"></div>
+    <div class="config-row"><label>Alitas</label><input type="number" id="cfg-alitas" inputmode="numeric" onchange="guardarConfig()"></div>
+    <div class="config-row"><label>Menudo</label><input type="number" id="cfg-menudo" inputmode="numeric" onchange="guardarConfig()"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Rinde x Cajon (kg)</div>
+    <div class="rinde-pill">Kilos que salen de cada cajon</div>
+    <div class="config-row"><label>Suprema</label><input type="number" id="cfg-r-suprema" inputmode="decimal" step="0.1" onchange="guardarConfig()"></div>
+    <div class="config-row"><label>Pata y Muslo</label><input type="number" id="cfg-r-patamuslo" inputmode="decimal" step="0.1" onchange="guardarConfig()"></div>
+    <div class="config-row"><label>Alitas</label><input type="number" id="cfg-r-alitas" inputmode="decimal" step="0.1" onchange="guardarConfig()"></div>
+    <div class="config-row"><label>Menudo</label><input type="number" id="cfg-r-menudo" inputmode="decimal" step="0.1" onchange="guardarConfig()"></div>
+    <div style="margin-top:8px;font-size:.75rem;color:var(--gris3)">Total rinde: <span id="total-rinde">0</span> kg/cajon</div>
+  </div>
+  <button class="btn btn-verde" onclick="guardarConfig()">💾 Guardar Cambios</button>
+</div>
+
+<script>
+var DB_NAME='PolleriaDanielDB',DB_VERSION=3,db=null;
+var ST={HIST:'historial',SMOV:'stock_movimientos',PROV:'proveedores',CFG:'config',DES:'tandas_desposte',TMOV:'trozado_movimientos'};
+
+function abrirDB(){
+  return new Promise(function(res,rej){
+    var req=indexedDB.open(DB_NAME,DB_VERSION);
+    req.onupgradeneeded=function(e){
+      var idb=e.target.result;
+      if(!idb.objectStoreNames.contains(ST.HIST)){var s=idb.createObjectStore(ST.HIST,{keyPath:'id',autoIncrement:true});s.createIndex('fecha','fecha',{unique:false});}
+      if(!idb.objectStoreNames.contains(ST.SMOV)){var s=idb.createObjectStore(ST.SMOV,{keyPath:'id',autoIncrement:true});s.createIndex('fecha','fecha',{unique:false});}
+      if(!idb.objectStoreNames.contains(ST.PROV)){var s=idb.createObjectStore(ST.PROV,{keyPath:'id',autoIncrement:true});s.createIndex('pagado','pagado',{unique:false});}
+      if(!idb.objectStoreNames.contains(ST.CFG)){idb.createObjectStore(ST.CFG,{keyPath:'k'});}
+      if(!idb.objectStoreNames.contains(ST.DES)){idb.createObjectStore(ST.DES,{keyPath:'id',autoIncrement:true});}
+      if(!idb.objectStoreNames.contains(ST.TMOV)){var s=idb.createObjectStore(ST.TMOV,{keyPath:'id',autoIncrement:true});s.createIndex('fecha','fecha',{unique:false});}
+    };
+    req.onsuccess=function(e){db=e.target.result;res();};
+    req.onerror=function(e){rej(e.target.error);};
+  });
+}
+function dbGet(s,k){return new Promise(function(res,rej){var r=db.transaction(s,'readonly').objectStore(s).get(k);r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};}); }
+function dbPut(s,o){return new Promise(function(res,rej){var r=db.transaction(s,'readwrite').objectStore(s).put(o);r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};}); }
+function dbAdd(s,o){return new Promise(function(res,rej){var r=db.transaction(s,'readwrite').objectStore(s).add(o);r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};}); }
+function dbDel(s,k){return new Promise(function(res,rej){var r=db.transaction(s,'readwrite').objectStore(s).delete(k);r.onsuccess=function(){res();};r.onerror=function(){rej(r.error);};}); }
+function dbAll(s){return new Promise(function(res,rej){var r=db.transaction(s,'readonly').objectStore(s).getAll();r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};}); }
+function dbClear(s){return new Promise(function(res,rej){var r=db.transaction(s,'readwrite').objectStore(s).clear();r.onsuccess=function(){res();};r.onerror=function(){rej(r.error);};}); }
+function cfgGet(k,def){return dbGet(ST.CFG,k).then(function(r){return r?r.v:def;});}
+function cfgSet(k,v){return dbPut(ST.CFG,{k:k,v:v});}
+
+var stockActual=0,fechaCierre=null,desTandaActual=null;
+// Stock de trozado en memoria
+var trozadoStock={sup:0,pym:0,ali:0,men:0};
+var cfgObj={costo:61500,entero:70000,suprema:6500,patamuslo:3500,alitas:2200,menudo:1500,rSuprema:4.5,rPatamuslo:6.0,rAlitas:2.5,rMenudo:1.5};
+
+function fmt(n){return '$'+Math.round(n).toLocaleString('es-AR');}
+function fmtKg(n){return parseFloat(n).toFixed(1)+' kg';}
+function hoy(){return new Date().toLocaleDateString('es-AR');}
+function diaCerrado(){return fechaCierre===hoy();}
+
+function toast(msg,tipo){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=tipo==='error'?'#dc2626':tipo==='info'?'#2563eb':'#1e293b';
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
+}
+
+// ══ TROZADO ══
+function actualizarDisplayTrozado(){
+  var f=function(n){return parseFloat(n||0).toFixed(1);};
+  document.getElementById('troz-disp-sup').innerHTML=f(trozadoStock.sup)+'<small> kg</small>';
+  document.getElementById('troz-disp-pym').innerHTML=f(trozadoStock.pym)+'<small> kg</small>';
+  document.getElementById('troz-disp-ali').innerHTML=f(trozadoStock.ali)+'<small> kg</small>';
+  document.getElementById('troz-disp-men').innerHTML=f(trozadoStock.men)+'<small> kg</small>';
+}
+
+function agregarTrozado(){
+  var sup=parseFloat(document.getElementById('troz-inp-sup').value)||0;
+  var pym=parseFloat(document.getElementById('troz-inp-pym').value)||0;
+  var ali=parseFloat(document.getElementById('troz-inp-ali').value)||0;
+  var men=parseFloat(document.getElementById('troz-inp-men').value)||0;
+  if(!sup&&!pym&&!ali&&!men){toast('Ingresa al menos un corte','error');return;}
+  trozadoStock.sup=+(trozadoStock.sup+sup).toFixed(2);
+  trozadoStock.pym=+(trozadoStock.pym+pym).toFixed(2);
+  trozadoStock.ali=+(trozadoStock.ali+ali).toFixed(2);
+  trozadoStock.men=+(trozadoStock.men+men).toFixed(2);
+  var partes=[];
+  if(sup)partes.push('🥩 +'+sup+' kg suprema');
+  if(pym)partes.push('🍗 +'+pym+' kg p/m');
+  if(ali)partes.push('🍖 +'+ali+' kg alitas');
+  if(men)partes.push('🫀 +'+men+' kg menudo');
+  var mov={tipo:'entrada',fuente:'manual',fecha:hoy(),sup:sup,pym:pym,ali:ali,men:men,detalle:partes.join(' · '),stockResultante:{sup:trozadoStock.sup,pym:trozadoStock.pym,ali:trozadoStock.ali,men:trozadoStock.men},ts:Date.now()};
+  Promise.all([dbAdd(ST.TMOV,mov),cfgSet('trozadoStock',trozadoStock)]).then(function(){
+    actualizarDisplayTrozado();
+    renderMovimientosTrozado();
+    ['troz-inp-sup','troz-inp-pym','troz-inp-ali','troz-inp-men'].forEach(function(id){document.getElementById(id).value='';});
+    toast('Trozado sumado al stock ✓');
+  });
+}
+
+function ajustarTrozadoManual(){
+  var sup=parseFloat(document.getElementById('troz-adj-sup').value);
+  var pym=parseFloat(document.getElementById('troz-adj-pym').value);
+  var ali=parseFloat(document.getElementById('troz-adj-ali').value);
+  var men=parseFloat(document.getElementById('troz-adj-men').value);
+  var ant=Object.assign({},trozadoStock);
+  if(!isNaN(sup))trozadoStock.sup=+sup.toFixed(2);
+  if(!isNaN(pym))trozadoStock.pym=+pym.toFixed(2);
+  if(!isNaN(ali))trozadoStock.ali=+ali.toFixed(2);
+  if(!isNaN(men))trozadoStock.men=+men.toFixed(2);
+  var partes=[];
+  if(!isNaN(sup))partes.push('🥩 sup: '+ant.sup+'→'+trozadoStock.sup+' kg');
+  if(!isNaN(pym))partes.push('🍗 p/m: '+ant.pym+'→'+trozadoStock.pym+' kg');
+  if(!isNaN(ali))partes.push('🍖 ali: '+ant.ali+'→'+trozadoStock.ali+' kg');
+  if(!isNaN(men))partes.push('🫀 men: '+ant.men+'→'+trozadoStock.men+' kg');
+  if(!partes.length){toast('Ingresa al menos un valor','error');return;}
+  var mov={tipo:'ajuste',fuente:'manual',fecha:hoy(),sup:!isNaN(sup)?sup-ant.sup:0,pym:!isNaN(pym)?pym-ant.pym:0,ali:!isNaN(ali)?ali-ant.ali:0,men:!isNaN(men)?men-ant.men:0,detalle:'Ajuste manual: '+partes.join(' · '),stockResultante:{sup:trozadoStock.sup,pym:trozadoStock.pym,ali:trozadoStock.ali,men:trozadoStock.men},ts:Date.now()};
+  Promise.all([dbAdd(ST.TMOV,mov),cfgSet('trozadoStock',trozadoStock)]).then(function(){
+    actualizarDisplayTrozado();
+    renderMovimientosTrozado();
+    ['troz-adj-sup','troz-adj-pym','troz-adj-ali','troz-adj-men'].forEach(function(id){document.getElementById(id).value='';});
+    toast('Stock de trozado actualizado ✓');
+  });
+}
+
+function sumarTrozadoDesposte(kgSup,kgPym,kgAli,kgMen){
+  trozadoStock.sup=+(trozadoStock.sup+kgSup).toFixed(2);
+  trozadoStock.pym=+(trozadoStock.pym+kgPym).toFixed(2);
+  trozadoStock.ali=+(trozadoStock.ali+kgAli).toFixed(2);
+  trozadoStock.men=+(trozadoStock.men+kgMen).toFixed(2);
+  var partes=[];
+  if(kgSup)partes.push('🥩 '+kgSup+' kg sup');
+  if(kgPym)partes.push('🍗 '+kgPym+' kg p/m');
+  if(kgAli)partes.push('🍖 '+kgAli+' kg ali');
+  if(kgMen)partes.push('🫀 '+kgMen+' kg men');
+  var mov={tipo:'entrada',fuente:'desposte',fecha:hoy(),sup:kgSup,pym:kgPym,ali:kgAli,men:kgMen,detalle:'Auto-desposte: '+partes.join(' · '),stockResultante:{sup:trozadoStock.sup,pym:trozadoStock.pym,ali:trozadoStock.ali,men:trozadoStock.men},ts:Date.now()};
+  return Promise.all([dbAdd(ST.TMOV,mov),cfgSet('trozadoStock',trozadoStock)]);
+}
+
+function renderMovimientosTrozado(){
+  // Esta función se llama cuando se carga la tab de stock
+  // Los movimientos de trozado se muestran integrados en el historial de stock
+  renderMovimientos();
+}
+
+// ══ CAJONES ══
+function actualizarHeroStock(){
+  var n=stockActual;
+  ['hero-stock','stock-num-big'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=n;});
+  document.getElementById('hero-stock-sub').textContent=n===0?'Sin stock. Carga una compra.':n===1?'1 cajon disponible':n+' cajones disponibles';
+}
+
+function showTab(t,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab-'+t).classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(t==='config')cargarConfigUI();
+  if(t==='historial')renderHistorial();
+  if(t==='proveedores')renderProveedores();
+  if(t==='cortes')calcularCortes();
+  if(t==='stock'){actualizarHeroStock();actualizarDisplayTrozado();renderMovimientos();}
+  if(t==='datos')actualizarEstadisticasDB();
+  if(t==='desposte')renderDesposte();
+}
+
+function initDiario(){
+  actualizarHeroStock();
+  var cerrado=diaCerrado();
+  document.getElementById('dia-cerrado-banner').style.display=cerrado?'block':'none';
+  document.getElementById('btn-guardar').disabled=cerrado;
+  document.getElementById('btn-cerrar').disabled=cerrado;
+  ['cajones','costo-cajon','venta-mostrador','venta-enteros'].forEach(function(id){document.getElementById(id).disabled=cerrado;});
+  calcular();
+}
+
+function _compraImpl(cajones,costo,detalle){
+  if(cajones<=0){toast('Ingresa la cantidad de cajones','error');return Promise.resolve();}
+  stockActual+=cajones;
+  var mov={tipo:'entrada',fecha:hoy(),cajones:cajones,costo:costo,detalle:detalle||'Compra',stockResultante:stockActual,ts:Date.now()};
+  return Promise.all([dbAdd(ST.SMOV,mov),cfgSet('stockActual',stockActual)]).then(function(){actualizarHeroStock();calcular();toast('Se sumaron '+cajones+' cajones. Stock: '+stockActual,'info');});
+}
+
+function cargarCompra(){
+  var c=parseFloat(document.getElementById('compra-cajones').value)||0;
+  var p=parseFloat(document.getElementById('compra-costo').value)||cfgObj.costo;
+  _compraImpl(c,p,'Compra rapida').then(function(){document.getElementById('compra-cajones').value='';document.getElementById('compra-costo').value='';});
+}
+
+function cargarCompraStock(){
+  var c=parseFloat(document.getElementById('s-compra-cajones').value)||0;
+  var p=parseFloat(document.getElementById('s-compra-costo').value)||cfgObj.costo;
+  var d=(document.getElementById('s-compra-prov').value||'').trim();
+  _compraImpl(c,p,d?'Compra - '+d:'Compra').then(function(){['s-compra-cajones','s-compra-costo','s-compra-prov'].forEach(function(id){document.getElementById(id).value='';});renderMovimientos();});
+}
+
+function ajustarStockManual(){
+  var val=parseFloat(document.getElementById('stock-manual').value);
+  if(isNaN(val)||val<0){toast('Ingresa un numero valido','error');return;}
+  var ant=stockActual;stockActual=val;
+  var mov={tipo:'ajuste',fecha:hoy(),cajones:val-ant,detalle:'Ajuste manual ('+ant+' → '+val+')',stockResultante:stockActual,ts:Date.now()};
+  Promise.all([dbAdd(ST.SMOV,mov),cfgSet('stockActual',stockActual)]).then(function(){actualizarHeroStock();renderMovimientos();document.getElementById('stock-manual').value='';toast('Stock actualizado a '+stockActual+' cajones','info');});
+}
+
+function calcular(){
+  var cortados=parseFloat(document.getElementById('cajones').value)||0;
+  var costoCaj=parseFloat(document.getElementById('costo-cajon').value)||cfgObj.costo;
+  var mostrador=parseFloat(document.getElementById('venta-mostrador').value)||0;
+  var enteros=parseFloat(document.getElementById('venta-enteros').value)||0;
+  var proc=cortados+enteros,costo=proc*costoCaj,ingEnt=enteros*cfgObj.entero,ingreso=mostrador+ingEnt,ganancia=ingreso-costo,stockPost=stockActual-proc;
+  var box=document.getElementById('ganancia-display');
+  if(cortados>0||mostrador>0||enteros>0){
+    document.getElementById('gan-monto').textContent=fmt(ganancia);
+    document.getElementById('gan-sub').textContent=proc+' caj procesados — Costo: '+fmt(costo);
+    box.className='ganancia-box'+(ganancia<0?' negativa':'');
+    document.getElementById('card-desglose').style.display='block';
+    document.getElementById('d-mostrador').textContent=fmt(mostrador);
+    document.getElementById('d-enteros').textContent=enteros>0?fmt(ingEnt)+' ('+enteros+' x '+fmt(cfgObj.entero)+')':fmt(0);
+    document.getElementById('d-ingreso').textContent=fmt(ingreso);
+    document.getElementById('d-costo-lbl').textContent=proc+' caj x '+fmt(costoCaj);
+    document.getElementById('d-costo-val').textContent=fmt(costo);
+    document.getElementById('d-costo').innerHTML='<b>-'+fmt(costo)+'</b>';
+    var dGan=document.getElementById('d-gan');dGan.textContent=fmt(ganancia);dGan.style.color=ganancia>=0?'var(--verde)':'var(--rojo)';
+    if(proc>0){document.getElementById('d-stock-row').style.display='flex';document.getElementById('d-stock-val').textContent=stockPost+' caj'+(stockPost<0?' (INSUFICIENTE!)':'');document.getElementById('d-stock-val').style.color=stockPost<0?'var(--rojo)':'var(--azul)';}
+    else{document.getElementById('d-stock-row').style.display='none';}
+    var chk=document.getElementById('d-check');chk.textContent='Verificacion: '+fmt(cfgObj.entero)+' venta — '+fmt(costoCaj)+' costo = '+fmt(cfgObj.entero-costoCaj)+' ganancia/caj entero';chk.style.display='block';
+  } else {
+    document.getElementById('gan-monto').textContent='$0';
+    document.getElementById('gan-sub').textContent=stockActual>0?'Stock: '+stockActual+' cajones listos':'Carga una compra primero';
+    box.className='ganancia-box';document.getElementById('card-desglose').style.display='none';
+  }
+}
+
+function guardarDia(){
+  var cortados=parseFloat(document.getElementById('cajones').value)||0;
+  var costoCaj=parseFloat(document.getElementById('costo-cajon').value)||cfgObj.costo;
+  var mostrador=parseFloat(document.getElementById('venta-mostrador').value)||0;
+  var enteros=parseFloat(document.getElementById('venta-enteros').value)||0;
+  if(!cortados&&!mostrador&&!enteros){toast('Ingresa al menos cajones o venta','error');return;}
+  var proc=cortados+enteros,costo=proc*costoCaj,ingreso=mostrador+enteros*cfgObj.entero,ganancia=ingreso-costo;
+  if(proc>stockActual){if(!confirm('ATENCION: queres procesar '+proc+' cajones pero el stock es '+stockActual+'.\n¿Continuar igual?'))return;}
+  var ant=stockActual;stockActual-=proc;
+  var rHist={fecha:hoy(),cajones:cortados,enteros:enteros,procesados:proc,costoCaj:costoCaj,mostrador:mostrador,ganancia:ganancia,stockAntes:ant,stockDespues:stockActual,ts:Date.now()};
+  var rMov={tipo:'salida',fecha:hoy(),cajones:-proc,detalle:cortados+' cortados + '+enteros+' enteros vendidos',stockResultante:stockActual,ts:Date.now()};
+  Promise.all([dbAdd(ST.HIST,rHist),dbAdd(ST.SMOV,rMov),cfgSet('stockActual',stockActual)]).then(function(){actualizarHeroStock();calcular();toast('Guardado ✓  Ganancia: '+fmt(ganancia)+'  |  Stock: '+stockActual+' caj');});
+}
+
+function cerrarDia(){
+  var inp=prompt('CERRAR DIA\n\n¿Cuantos cajones quedan en la heladera ahora?',stockActual);
+  if(inp===null)return;
+  var final=Math.max(0,parseInt(inp)||0);
+  var ops=[cfgSet('fechaCierre',hoy())];
+  if(final!==stockActual){ops.push(dbAdd(ST.SMOV,{tipo:'ajuste',fecha:hoy(),cajones:final-stockActual,detalle:'Ajuste al cierre del dia',stockResultante:final,ts:Date.now()}));ops.push(cfgSet('stockActual',final));stockActual=final;}
+  Promise.all(ops).then(function(){
+    fechaCierre=hoy();actualizarHeroStock();initDiario();
+    var ov=document.getElementById('cierre-overlay');ov.style.display='flex';
+    ov.querySelectorAll('.co-icon,.co-l1,.co-l2,.co-l3').forEach(function(el){el.style.animation='none';el.offsetHeight;el.style.animation='';});
+    setTimeout(function(){ov.style.display='none';},5000);
+  });
+}
+
+function renderMovimientos(){
+  Promise.all([dbAll(ST.SMOV),dbAll(ST.TMOV)]).then(function(vals){
+    var cajRows=vals[0].map(function(m){return Object.assign({},m,{_tipo:'caj'});});
+    var trozRows=vals[1].map(function(m){return Object.assign({},m,{_tipo:'troz'});});
+    var todos=cajRows.concat(trozRows).sort(function(a,b){return b.ts-a.ts;});
+    var lista=document.getElementById('stock-movimientos');
+    if(!todos.length){lista.innerHTML='<div class="empty-msg">Sin movimientos</div>';return;}
+    lista.innerHTML=todos.slice(0,30).map(function(m){
+      if(m._tipo==='caj'){
+        var ic=m.tipo==='entrada'?'⬆️':m.tipo==='salida'?'⬇️':'✏️';
+        var co=m.tipo==='entrada'?'var(--verde)':m.tipo==='salida'?'var(--rojo)':'var(--naranja)';
+        var sg=m.cajones>0?'+':'';
+        return '<div class="historia-item"><div><div style="font-weight:600">'+ic+' '+m.detalle+'</div><div style="font-size:.75rem;color:var(--gris3)">🧊 Cajones · '+m.fecha+' · Quedan: '+m.stockResultante+' caj</div></div><div style="font-weight:700;color:'+co+'">'+sg+m.cajones+' caj</div></div>';
+      } else {
+        var ic2=m.tipo==='entrada'?'⬆️':'✏️';
+        var fuente=m.fuente==='desposte'?'<span class="auto-tag">🔪 Auto-desposte</span>':'';
+        var tags='';
+        if(m.sup>0)tags+='<span class="trozado-tag sup">+'+m.sup+' kg sup</span>';
+        if(m.pym>0)tags+='<span class="trozado-tag pym">+'+m.pym+' kg p/m</span>';
+        if(m.ali>0)tags+='<span class="trozado-tag ali">+'+m.ali+' kg ali</span>';
+        if(m.men>0)tags+='<span class="trozado-tag men">+'+m.men+' kg men</span>';
+        return '<div class="trozado-mov-item"><div><div class="trozado-mov-detalle">'+ic2+' Trozado'+fuente+'</div><div class="trozado-mov-sub">'+m.fecha+'</div><div class="trozado-mov-tags">'+tags+'</div></div></div>';
+      }
+    }).join('');
+  });
+}
+
+var cortesDef=[{nombre:'Suprema',rKey:'rSuprema',pKey:'suprema'},{nombre:'Pata y Muslo',rKey:'rPatamuslo',pKey:'patamuslo'},{nombre:'Alitas',rKey:'rAlitas',pKey:'alitas'},{nombre:'Menudo',rKey:'rMenudo',pKey:'menudo'}];
+function calcularCortes(){
+  var caj=parseFloat(document.getElementById('c-cajones').value)||0;
+  var lista=document.getElementById('cortes-lista'),res=document.getElementById('cortes-resultado'),card=document.getElementById('card-totales-corte'),tot=0,h='',rh='';
+  cortesDef.forEach(function(c){var kg=cfgObj[c.rKey]*caj,pr=cfgObj[c.pKey],ing=kg*pr;tot+=ing;h+='<div class="corte-row"><div><div class="corte-nombre">'+c.nombre+'</div><div class="corte-detalle">'+cfgObj[c.rKey]+' kg/caj — '+kg.toFixed(1)+' kg — '+fmt(pr)+'/kg</div></div><div class="corte-ganancia">'+fmt(ing)+'</div></div>';rh+='<div class="total-row"><span>'+c.nombre+'</span><span style="color:var(--verde)">'+fmt(ing)+'</span></div>';});
+  lista.innerHTML=h||'<div class="empty-msg">Ingresa cajones arriba</div>';res.innerHTML=rh;document.getElementById('total-cortes-gan').textContent=fmt(tot);card.style.display=caj>0?'block':'none';
+}
+
+function agregarProveedor(){
+  var nombre=(document.getElementById('p-nombre').value||'').trim(),detalle=(document.getElementById('p-detalle').value||'').trim(),monto=parseFloat(document.getElementById('p-monto').value)||0,fecha=document.getElementById('p-fecha').value;
+  if(!nombre||!monto){toast('Completa proveedor y monto','error');return;}
+  dbAdd(ST.PROV,{nombre:nombre,detalle:detalle,monto:monto,fecha:fecha||hoy(),pagado:false,ts:Date.now()}).then(function(){['p-nombre','p-detalle','p-monto'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('p-fecha').valueAsDate=new Date();renderProveedores();toast('Proveedor guardado');});
+}
+function togglePago(id){dbGet(ST.PROV,id).then(function(p){if(!p)return;p.pagado=!p.pagado;dbPut(ST.PROV,p).then(function(){renderProveedores();toast(p.pagado?'Marcado pagado':'Marcado pendiente');});});}
+function eliminarProveedor(id){if(!confirm('Eliminar esta compra?'))return;dbDel(ST.PROV,id).then(function(){renderProveedores();toast('Eliminado');});}
+function renderProveedores(){
+  dbAll(ST.PROV).then(function(rows){
+    rows.sort(function(a,b){return b.ts-a.ts;});
+    var lista=document.getElementById('proveedores-lista'),deudaEl=document.getElementById('deuda-total');
+    if(!rows.length){lista.innerHTML='<div class="empty-msg">Sin compras registradas</div>';deudaEl.textContent='$0';return;}
+    var deuda=rows.filter(function(p){return !p.pagado;}).reduce(function(a,p){return a+p.monto;},0);
+    deudaEl.textContent=fmt(deuda);
+    lista.innerHTML=rows.map(function(p){return '<div class="proveedor-item"><button class="btn-toggle" onclick="togglePago('+p.id+')">'+(p.pagado?'✅':'🔴')+'</button><div class="proveedor-info"><div class="proveedor-nombre">'+p.nombre+'</div><div class="proveedor-detalle">'+(p.detalle||'')+' — '+p.fecha+'</div><span class="badge '+(p.pagado?'badge-pagado':'badge-pendiente')+'">'+(p.pagado?'PAGADO':'PENDIENTE')+'</span></div><div><div class="proveedor-monto '+(p.pagado?'pagado':'pendiente')+'">'+fmt(p.monto)+'</div><button class="btn-delete" onclick="eliminarProveedor('+p.id+')">🗑️</button></div></div>';}).join('');
+  });
+}
+
+function renderHistorial(){
+  dbAll(ST.HIST).then(function(rows){
+    rows.sort(function(a,b){return b.ts-a.ts;});
+    var lista=document.getElementById('historial-lista'),card=document.getElementById('card-resumen-hist');
+    if(!rows.length){lista.innerHTML='<div class="empty-msg">Todavia no guardaste ningun dia</div>';card.style.display='none';return;}
+    lista.innerHTML=rows.map(function(d){var det=d.cajones+' cortados';if(d.enteros)det+=' + '+d.enteros+' enteros';if(d.stockDespues!==undefined)det+=' | Stock: '+d.stockDespues+' caj';return '<div class="historia-item"><div><div style="font-weight:600">'+d.fecha+'</div><div style="font-size:.75rem;color:var(--gris3)">'+det+'</div></div><div style="text-align:right"><div class="historia-gan '+(d.ganancia>=0?'pos':'neg')+'">'+fmt(d.ganancia)+'</div><button class="btn btn-gris btn-sm" onclick="borrarHistorial('+d.id+')" style="margin-top:4px">🗑️</button></div></div>';}).join('');
+    var tGan=rows.reduce(function(a,d){return a+d.ganancia;},0),tCaj=rows.reduce(function(a,d){return a+d.cajones;},0);
+    document.getElementById('h-dias').textContent=rows.length;document.getElementById('h-cajones').textContent=tCaj;document.getElementById('h-gan').textContent=fmt(tGan);document.getElementById('h-gan').style.color=tGan>=0?'var(--verde)':'var(--rojo)';document.getElementById('h-prom').textContent=fmt(tGan/rows.length);card.style.display='block';
+  });
+}
+function borrarHistorial(id){if(!confirm('Eliminar este registro?'))return;dbDel(ST.HIST,id).then(function(){renderHistorial();toast('Registro eliminado');});}
+
+function cargarConfigUI(){
+  var m={costo:'cfg-costo',entero:'cfg-entero',suprema:'cfg-suprema',patamuslo:'cfg-patamuslo',alitas:'cfg-alitas',menudo:'cfg-menudo',rSuprema:'cfg-r-suprema',rPatamuslo:'cfg-r-patamuslo',rAlitas:'cfg-r-alitas',rMenudo:'cfg-r-menudo'};
+  Object.keys(m).forEach(function(k){document.getElementById(m[k]).value=cfgObj[k];});actualizarTotalRinde();
+}
+function guardarConfig(){
+  var m={costo:'cfg-costo',entero:'cfg-entero',suprema:'cfg-suprema',patamuslo:'cfg-patamuslo',alitas:'cfg-alitas',menudo:'cfg-menudo',rSuprema:'cfg-r-suprema',rPatamuslo:'cfg-r-patamuslo',rAlitas:'cfg-r-alitas',rMenudo:'cfg-r-menudo'};
+  Object.keys(m).forEach(function(k){cfgObj[k]=parseFloat(document.getElementById(m[k]).value)||cfgObj[k];});
+  cfgSet('config',cfgObj).then(function(){actualizarTotalRinde();calcular();toast('Configuracion guardada ✓');});
+}
+function actualizarTotalRinde(){document.getElementById('total-rinde').textContent=(cfgObj.rSuprema+cfgObj.rPatamuslo+cfgObj.rAlitas+cfgObj.rMenudo).toFixed(1);}
+
+function actualizarEstadisticasDB(){
+  Promise.all([dbAll(ST.HIST),dbAll(ST.SMOV),dbAll(ST.PROV),dbAll(ST.DES),dbAll(ST.TMOV)]).then(function(vals){
+    document.getElementById('stat-historial').textContent=vals[0].length+' registros';
+    document.getElementById('stat-stock').textContent=vals[1].length+' movimientos';
+    document.getElementById('stat-proveedores').textContent=vals[2].length+' registros';
+    document.getElementById('stat-tandas').textContent=vals[3].length+' tandas';
+    document.getElementById('stat-stock-actual').textContent=stockActual+' cajones';
+    var t=trozadoStock;
+    document.getElementById('stat-stock-trozado').textContent='🥩'+t.sup+'kg · 🍗'+t.pym+'kg · 🍖'+t.ali+'kg · 🫀'+t.men+'kg';
+  });
+}
+
+function exportarRespaldo(){
+  Promise.all([dbAll(ST.HIST),dbAll(ST.SMOV),dbAll(ST.PROV),dbAll(ST.DES),dbAll(ST.TMOV)]).then(function(vals){
+    var backup={version:5,exportado:new Date().toISOString(),app:'Avicola Don Daniel',historial:vals[0],stockMovimientos:vals[1],proveedores:vals[2],tandasDesposte:vals[3],trozadoMovimientos:vals[4],config:cfgObj,stockActual:stockActual,trozadoStock:trozadoStock,fechaCierre:fechaCierre};
+    var blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(blob),fecha=new Date().toLocaleDateString('es-AR').replace(/\//g,'-');
+    var a=document.createElement('a');a.href=url;a.download='polleria-respaldo-'+fecha+'.json';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);toast('Respaldo descargado ✓');
+  });
+}
+
+function importarRespaldo(){
+  var file=document.getElementById('import-file').files[0];
+  if(!file){toast('Selecciona un archivo .json primero','error');return;}
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var data=JSON.parse(e.target.result);
+      if(!data.historial){toast('Archivo invalido','error');return;}
+      if(!confirm('ATENCION: Esto reemplaza TODOS los datos actuales.\n¿Continuar?'))return;
+      Promise.all([dbClear(ST.HIST),dbClear(ST.SMOV),dbClear(ST.PROV),dbClear(ST.DES),dbClear(ST.TMOV)]).then(function(){
+        var ops=[];
+        (data.historial||[]).forEach(function(r){var c=Object.assign({},r);delete c.id;ops.push(dbAdd(ST.HIST,c));});
+        (data.stockMovimientos||[]).forEach(function(r){var c=Object.assign({},r);delete c.id;ops.push(dbAdd(ST.SMOV,c));});
+        (data.proveedores||[]).forEach(function(r){var c=Object.assign({},r);delete c.id;ops.push(dbAdd(ST.PROV,c));});
+        (data.tandasDesposte||[]).forEach(function(r){var c=Object.assign({},r);delete c.id;ops.push(dbAdd(ST.DES,c));});
+        (data.trozadoMovimientos||[]).forEach(function(r){var c=Object.assign({},r);delete c.id;ops.push(dbAdd(ST.TMOV,c));});
+        if(data.config)ops.push(cfgSet('config',data.config));
+        if(data.stockActual!==undefined)ops.push(cfgSet('stockActual',data.stockActual));
+        if(data.trozadoStock)ops.push(cfgSet('trozadoStock',data.trozadoStock));
+        if(data.fechaCierre!==undefined)ops.push(cfgSet('fechaCierre',data.fechaCierre));
+        return Promise.all(ops);
+      }).then(function(){
+        stockActual=data.stockActual||0;
+        fechaCierre=data.fechaCierre||null;
+        if(data.config)cfgObj=data.config;
+        if(data.trozadoStock)trozadoStock=data.trozadoStock;
+        actualizarHeroStock();actualizarDisplayTrozado();cargarConfigUI();initDiario();renderProveedores();renderHistorial();
+        toast('Datos restaurados correctamente ✓');
+      });
+    }catch(err){toast('Error al leer el archivo','error');}
+  };
+  reader.readAsText(file);
+}
+
+function borrarTodo(){
+  if(!confirm('BORRAR TODO\n\nEsta accion elimina historial, stock, proveedores, tandas y configuracion.\nNO se puede deshacer.'))return;
+  var conf=prompt('Para confirmar, escribe exactamente: BORRAR TODO');
+  if(conf!=='BORRAR TODO'){toast('Cancelado. No se borro nada.');return;}
+  Promise.all([dbClear(ST.HIST),dbClear(ST.SMOV),dbClear(ST.PROV),dbClear(ST.CFG),dbClear(ST.DES),dbClear(ST.TMOV)]).then(function(){
+    stockActual=0;fechaCierre=null;
+    trozadoStock={sup:0,pym:0,ali:0,men:0};
+    cfgObj={costo:61500,entero:70000,suprema:6500,patamuslo:3500,alitas:2200,menudo:1500,rSuprema:4.5,rPatamuslo:6.0,rAlitas:2.5,rMenudo:1.5};
+    actualizarHeroStock();actualizarDisplayTrozado();cargarConfigUI();initDiario();renderProveedores();renderHistorial();
+    toast('Todos los datos fueron eliminados');
+  });
+}
+
+function enviarWhatsApp(){
+  var cortados=parseFloat(document.getElementById('cajones').value)||0,mostrador=parseFloat(document.getElementById('venta-mostrador').value)||0,costoCaj=parseFloat(document.getElementById('costo-cajon').value)||cfgObj.costo,enteros=parseFloat(document.getElementById('venta-enteros').value)||0,ganancia=mostrador+enteros*cfgObj.entero-(cortados+enteros)*costoCaj;
+  var fecha=new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'});
+  dbAll(ST.PROV).then(function(rows){
+    var deuda=rows.filter(function(p){return !p.pagado;}).reduce(function(a,p){return a+p.monto;},0);
+    var fmtW=function(n){return '$'+Math.round(n).toLocaleString('es-AR');};
+    var t=trozadoStock;
+    var trozInfo='Stock trozado: 🥩'+t.sup+'kg sup · 🍗'+t.pym+'kg p/m · 🍖'+t.ali+'kg ali · 🫀'+t.men+'kg men';
+    var texto='Reporte del dia '+fecha+'\n\nCajones cortados: *'+cortados+'*\n'+(enteros?'Enteros vendidos: *'+enteros+'*\n':'')+'Mostrador: *'+fmtW(mostrador)+'*\nGanancia Limpia: *'+fmtW(ganancia)+'*\nStock en heladera: *'+stockActual+' cajones*\n'+trozInfo+'\nDeuda pendiente: *'+fmtW(deuda)+'*';
+    window.open('https://wa.me/?text='+encodeURIComponent(texto),'_blank');
+  });
+}
+
+// ══ DESPOSTE ══
+function iniciarDesposte(){
+  desTandaActual=null;
+  document.getElementById('des-costo').value=cfgObj.costo||'';
+  document.getElementById('des-cajones').value='';
+  ['des-kg-sup','des-kg-pym','des-kg-ali','des-kg-men'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('des-stock-preview').innerHTML='';
+  document.getElementById('des-auto-stock').checked=true;
+  desActualizarKgTotal();
+  document.getElementById('btn-iniciar-des').style.display='none';
+  document.getElementById('desposte-wizard').style.display='block';
+  desIrPaso(1);
+}
+
+function cancelarDesposte(){
+  document.getElementById('desposte-wizard').style.display='none';
+  document.getElementById('btn-iniciar-des').style.display='flex';
+  desTandaActual=null;
+}
+
+function desIrPaso(n){
+  document.querySelectorAll('.wizard-step').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('des-step'+n).classList.add('active');
+}
+function desVolverPaso(n){desIrPaso(n);}
+
+function desPreviewStock(){
+  var caj=parseFloat(document.getElementById('des-cajones').value)||0;
+  var el=document.getElementById('des-stock-preview');
+  if(!caj){el.innerHTML='';return;}
+  var resto=stockActual-caj;
+  if(resto<0){el.innerHTML='<div class="stock-warning">⚠️ Stock insuficiente. Tenés '+stockActual+' cajones, querés usar '+caj+'.</div>';}
+  else{el.innerHTML='<div class="stock-ok">✅ Stock actual: '+stockActual+' → después del corte: '+resto+' cajones</div>';}
+}
+
+function desPaso2(){
+  var caj=parseFloat(document.getElementById('des-cajones').value)||0;
+  var costo=parseFloat(document.getElementById('des-costo').value)||cfgObj.costo||0;
+  if(!caj||caj<1){toast('Ingresa la cantidad de cajones','error');return;}
+  desTandaActual={cajones:caj,costo:costo};
+  document.getElementById('des-step2-sub').textContent='Tanda de '+caj+' cajones — anotá los kilos reales';
+  desIrPaso(2);
+}
+
+function desActualizarKgTotal(){
+  var t=(parseFloat(document.getElementById('des-kg-sup').value)||0)+(parseFloat(document.getElementById('des-kg-pym').value)||0)+(parseFloat(document.getElementById('des-kg-ali').value)||0)+(parseFloat(document.getElementById('des-kg-men').value)||0);
+  document.getElementById('des-kg-total').textContent=t.toFixed(1)+' kg';
+}
+
+function desPaso3(){
+  if(!desTandaActual){desIrPaso(1);return;}
+  var kgSup=parseFloat(document.getElementById('des-kg-sup').value)||0,kgPym=parseFloat(document.getElementById('des-kg-pym').value)||0,kgAli=parseFloat(document.getElementById('des-kg-ali').value)||0,kgMen=parseFloat(document.getElementById('des-kg-men').value)||0;
+  var totalKg=kgSup+kgPym+kgAli+kgMen;
+  var ingSup=kgSup*cfgObj.suprema,ingPym=kgPym*cfgObj.patamuslo,ingAli=kgAli*cfgObj.alitas,ingMen=kgMen*cfgObj.menudo;
+  var totalIng=ingSup+ingPym+ingAli+ingMen,totalCosto=desTandaActual.cajones*desTandaActual.costo,ganancia=totalIng-totalCosto;
+  desTandaActual.kgSup=kgSup;desTandaActual.kgPym=kgPym;desTandaActual.kgAli=kgAli;desTandaActual.kgMen=kgMen;
+  desTandaActual.totalKg=totalKg;desTandaActual.totalIng=totalIng;desTandaActual.totalCosto=totalCosto;desTandaActual.ganancia=ganancia;
+  var box=document.getElementById('des-resultado-box');box.className='resultado-box'+(ganancia<0?' negativo':'');
+  document.getElementById('des-res-monto').textContent=fmt(ganancia);
+  document.getElementById('des-res-sub').textContent=desTandaActual.cajones+' cajones · '+totalKg.toFixed(1)+' kg totales';
+  var cortes=[{n:'🥩 Suprema',kg:kgSup,ing:ingSup,p:cfgObj.suprema},{n:'🍗 Pata y Muslo',kg:kgPym,ing:ingPym,p:cfgObj.patamuslo},{n:'🍖 Alitas',kg:kgAli,ing:ingAli,p:cfgObj.alitas},{n:'🫀 Menudo',kg:kgMen,ing:ingMen,p:cfgObj.menudo}].filter(function(c){return c.kg>0;});
+  var html=cortes.map(function(c){return '<div class="total-row"><span>'+c.n+' ('+c.kg+' kg × '+fmt(c.p)+'/kg)</span><span style="color:var(--verde)">'+fmt(c.ing)+'</span></div>';}).join('');
+  html+='<div class="total-row destacado"><span>Total Ingreso</span><span style="color:var(--verde)">'+fmt(totalIng)+'</span></div>';
+  html+='<div class="total-row costo-line"><span>Costo ('+desTandaActual.cajones+' caj × '+fmt(desTandaActual.costo)+')</span><span style="color:var(--rojo)">-'+fmt(totalCosto)+'</span></div>';
+  html+='<div class="total-row destacado"><span style="font-size:1rem">GANANCIA NETA</span><span style="font-size:1rem;color:'+(ganancia>=0?'var(--verde)':'var(--rojo)')+'">'+fmt(ganancia)+'</span></div>';
+  document.getElementById('des-res-desglose').innerHTML=html;
+  desIrPaso(3);
+}
+
+function guardarTanda(){
+  if(!desTandaActual)return;
+  var t=desTandaActual,ant=stockActual;
+  var autoStock=document.getElementById('des-auto-stock').checked;
+  stockActual=Math.max(0,stockActual-t.cajones);
+  var mov={tipo:'desposte',fecha:hoy(),cajones:-t.cajones,detalle:'Desposte — '+t.cajones+' cajones',stockResultante:stockActual,ts:Date.now()};
+  var tanda={fecha:hoy(),ts:Date.now(),cajones:t.cajones,costo:t.costo,kgSup:t.kgSup,kgPym:t.kgPym,kgAli:t.kgAli,kgMen:t.kgMen,totalKg:t.totalKg,totalIng:t.totalIng,totalCosto:t.totalCosto,ganancia:t.ganancia,autoStock:autoStock};
+  var ops=[dbAdd(ST.DES,tanda),dbAdd(ST.SMOV,mov),cfgSet('stockActual',stockActual)];
+  // Si el checkbox está activado, sumar kilos al stock de trozado
+  if(autoStock){
+    ops.push(sumarTrozadoDesposte(t.kgSup,t.kgPym,t.kgAli,t.kgMen));
+  }
+  Promise.all(ops).then(function(){
+    actualizarHeroStock();
+    actualizarDisplayTrozado();
+    cancelarDesposte();
+    renderDesposte();
+    var msg='Tanda guardada ✓  Ganancia: '+fmt(t.ganancia);
+    if(autoStock)msg+='  · Kilos sumados al Stock de Trozado';
+    toast(msg);
+  });
+}
+
+function renderDesposte(){
+  dbAll(ST.DES).then(function(rows){
+    rows.sort(function(a,b){return b.ts-a.ts;});
+    if(rows.length){
+      var u=rows[0];
+      document.getElementById('des-hero-num').textContent=fmt(u.ganancia);
+      document.getElementById('des-hero-sub').textContent='Ultima tanda: '+u.cajones+' cajones · '+u.totalKg.toFixed(1)+' kg · '+u.fecha;
+    }
+    var lista=document.getElementById('des-historial');
+    if(!rows.length){lista.innerHTML='<div class="empty-msg">Todavia no hay tandas guardadas</div>';}
+    else{
+      lista.innerHTML=rows.map(function(t,i){
+        var dk='🥩 '+t.kgSup+'kg · 🍗 '+t.kgPym+'kg · 🍖 '+t.kgAli+'kg · 🫀 '+t.kgMen+'kg';
+        var autoTag=t.autoStock?'<span class="auto-tag">🔪 +Stock trozado</span>':'';
+        return '<div class="tanda-item"><div class="tanda-header"><span class="tanda-titulo">Tanda #'+(rows.length-i)+' — '+t.cajones+' cajones'+autoTag+'</span><span class="tanda-gan '+(t.ganancia>=0?'pos':'neg')+'">'+fmt(t.ganancia)+'</span></div><div class="tanda-detalle">'+dk+' — Rinde: '+t.totalKg.toFixed(1)+' kg</div><div class="tanda-detalle" style="margin-top:2px">'+t.fecha+' · Ingreso: '+fmt(t.totalIng)+' · Costo: '+fmt(t.totalCosto)+'</div></div>';
+      }).join('');
+    }
+    var totGan=rows.reduce(function(a,r){return a+r.ganancia;},0),totCaj=rows.reduce(function(a,r){return a+r.cajones;},0),totKg=rows.reduce(function(a,r){return a+(r.totalKg||0);},0);
+    document.getElementById('des-stat-tandas').textContent=rows.length;
+    document.getElementById('des-stat-cajones').textContent=totCaj;
+    document.getElementById('des-stat-kg').textContent=totKg.toFixed(0)+' kg';
+    document.getElementById('des-stat-gan').textContent=fmt(totGan);
+  });
+}
+
+// PIN — 1234
+var PIN_OK='1234',pinBuf='';
+function pinKey(d){if(pinBuf.length>=4)return;pinBuf+=d;_pinDots();if(pinBuf.length===4)setTimeout(_pinVerify,120);}
+function pinDel(){pinBuf=pinBuf.slice(0,-1);_pinDots();}
+function _pinDots(){for(var i=0;i<4;i++){var el=document.getElementById('pd'+i);if(el)el.classList.toggle('on',i<pinBuf.length);}}
+function _pinVerify(){
+  if(pinBuf===PIN_OK){
+    var ps=document.getElementById('pin-screen');
+    ps.innerHTML='<div style="text-align:center"><div style="font-size:4rem;margin-bottom:16px;animation:crossPop .6s cubic-bezier(.34,1.56,.64,1) both">✝️</div><div style="font-size:1.35rem;font-weight:800;color:var(--verde-dark);margin-bottom:10px;animation:fadeSlide .5s ease .5s both">Bienvenido Hno. Daniel</div><div style="font-size:1rem;color:#16a34a;font-weight:600;animation:fadeSlide .5s ease .9s both">Dios le bendiga 🕊️</div></div>';
+    setTimeout(function(){ps.style.display='none';},5000);
+  } else {
+    var dots=document.getElementById('pin-dots');dots.classList.add('shake');
+    try{navigator.vibrate&&navigator.vibrate([80,40,80]);}catch(e){}
+    setTimeout(function(){dots.classList.remove('shake');pinBuf='';_pinDots();},500);
+  }
+}
+
+// ARRANQUE
+abrirDB().then(function(){
+  return Promise.all([
+    cfgGet('stockActual',0),
+    cfgGet('fechaCierre',null),
+    cfgGet('config',null),
+    cfgGet('trozadoStock',null)
+  ]);
+}).then(function(vals){
+  stockActual=vals[0];
+  fechaCierre=vals[1];
+  if(vals[2])cfgObj=vals[2];
+  if(vals[3])trozadoStock=vals[3];
+  else trozadoStock={sup:0,pym:0,ali:0,men:0};
+  actualizarHeroStock();
+  actualizarDisplayTrozado();
+  cargarConfigUI();
+  renderProveedores();
+  document.getElementById('p-fecha').valueAsDate=new Date();
+  initDiario();
+  document.getElementById('loading-overlay').style.display='none';
+}).catch(function(err){
+  console.error('Error al iniciar DB:',err);
+  document.getElementById('loading-overlay').style.display='none';
+  alert('Error al iniciar la base de datos. Intenta recargar.');
+});
+</script>
+</body>
+</html>
