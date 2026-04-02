@@ -1,66 +1,122 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Avicola Don Daniel - Cloud</title>
-    <style>
-        /* Mantenemos tus estilos originales para que no cambie nada visualmente */
-        *{box-sizing:border-box;margin:0;padding:0}:root{--verde:#16a34a;--verde-light:#dcfce7;--verde-dark:#14532d;--rojo:#dc2626;--rojo-light:#fee2e2;--azul:#2563eb;--azul-light:#dbeafe;--naranja:#ea580c;--naranja-light:#ffedd5;--morado:#7c3aed;--morado-light:#ede9fe;--cyan:#0891b2;--cyan-light:#cffafe;--gris:#f1f5f9;--gris2:#e2e8f0;--gris3:#94a3b8;--texto:#1e293b;--sombra:0 2px 12px rgba(0,0,0,.10);}body{font-family:'Segoe UI',Arial,sans-serif;background:#f8fafc;color:var(--texto);min-height:100vh}nav{background:var(--verde-dark);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}.nav-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 4px}.nav-title{color:white;font-size:1.05rem;font-weight:700}.db-badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(22,163,74,0.4);color:#ffffff}.nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none}.tab-btn{background:none;border:none;color:rgba(255,255,255,.55);padding:8px 12px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}.tab-btn.active{color:white;border-bottom-color:#4ade80}.section{display:none;padding:16px;max-width:600px;margin:0 auto}.section.active{display:block}.card{background:white;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--sombra)}.card-title{font-size:.77rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gris3);margin-bottom:12px}.stock-hero{background:var(--azul);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:14px;box-shadow:0 4px 20px rgba(37,99,235,.35)}.stock-hero-num{color:white;font-size:3rem;font-weight:900;line-height:1}.ganancia-box{background:var(--verde);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:14px}.input-group{margin-bottom:12px}.input-group label{display:block;font-size:.8rem;font-weight:600;color:var(--gris3);margin-bottom:4px}.input-group input{width:100%;padding:13px 14px;border:2px solid var(--gris2);border-radius:10px;font-size:1rem;background:var(--gris)}.btn{width:100%;padding:15px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer}.btn-verde{background:var(--verde);color:white}.btn-azul{background:var(--azul);color:white}.btn-cyan{background:var(--cyan);color:white}.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:3000}.spinner{width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid var(--verde);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:#333;color:white;padding:12px 24px;border-radius:8px;transition:0.3s;z-index:4000}.toast.show{transform:translateX(-50%) translateY(0)}#pin-screen{position:fixed;inset:0;z-index:2000;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}.pin-dots{display:flex;gap:14px;margin-bottom:32px}.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--verde)}.pin-dot.on{background:var(--verde);transform:scale(1.25)}.pin-grid{display:grid;grid-template-columns:repeat(3,74px);gap:11px}.pin-key{height:74px;background:white;border:1.5px solid var(--gris2);border-radius:14px;font-size:1.6rem;font-weight:700;cursor:pointer}.trozado-hero{background:linear-gradient(135deg,#7c3aed,#0891b2);border-radius:16px;padding:16px;margin-bottom:14px}.trozado-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.trozado-pill{border-radius:12px;padding:10px;text-align:center;background:rgba(255,255,255,.2)}.trozado-pill-kg{font-size:1.2rem;font-weight:900;color:white}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.auto-tag{background:var(--verde-light);color:var(--verde-dark);font-size:0.7rem;padding:2px 6px;border-radius:4px;font-weight:bold}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Avicola Don Daniel</title>
+<style>
+/* RE-INSERTANDO TUS ESTILOS ORIGINALES */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --verde:#16a34a;--verde-light:#dcfce7;--verde-dark:#14532d;
+  --rojo:#dc2626;--rojo-light:#fee2e2;
+  --azul:#2563eb;--azul-light:#dbeafe;
+  --naranja:#ea580c;--naranja-light:#ffedd5;
+  --morado:#7c3aed;--morado-light:#ede9fe;
+  --cyan:#0891b2;--cyan-light:#cffafe;
+  --gris:#f1f5f9;--gris2:#e2e8f0;--gris3:#94a3b8;
+  --texto:#1e293b;
+  --sombra:0 2px 12px rgba(0,0,0,.10);
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f8fafc;color:var(--texto);min-height:100vh}
+
+/* NAV ORIGINAL */
+nav{background:var(--verde-dark);position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.nav-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 4px}
+.nav-title{color:white;font-size:1.05rem;font-weight:700}
+.db-badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:20px;background:rgba(74,222,128,.2);color:#4ade80}
+.nav-tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+.tab-btn{background:none;border:none;color:rgba(255,255,255,.55);padding:8px 12px;font-size:.75rem;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s}
+.tab-btn.active{color:white;border-bottom-color:#4ade80}
+
+.section{display:none;padding:16px;max-width:600px;margin:0 auto}
+.section.active{display:block}
+.card{background:white;border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:var(--sombra)}
+.card-title{font-size:.77rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gris3);margin-bottom:12px}
+
+/* HEROES Y CAJAS ORIGINALES */
+.stock-hero{background:var(--azul);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:14px;box-shadow:0 4px 20px rgba(37,99,235,.35)}
+.stock-hero-num{color:white;font-size:3rem;font-weight:900;line-height:1}
+.ganancia-box{background:var(--verde);border-radius:16px;padding:18px 16px;text-align:center;margin-bottom:14px}
+.ganancia-monto{color:white;font-size:2.5rem;font-weight:800;line-height:1}
+
+/* BOTONES Y FORMULARIOS */
+.btn{width:100%;padding:15px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-verde{background:var(--verde);color:white}
+.btn-azul{background:var(--azul);color:white}
+.btn-cyan{background:var(--cyan);color:white}
+.input-group input{width:100%;padding:13px 14px;border:2px solid var(--gris2);border-radius:10px;font-size:1rem;color:var(--texto);background:var(--gris)}
+
+/* TROZADO DESIGN */
+.trozado-hero{background:linear-gradient(135deg,#7c3aed,#0891b2);border-radius:16px;padding:16px;margin-bottom:14px}
+.trozado-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.trozado-pill{border-radius:12px;padding:12px 10px;text-align:center;background:rgba(255,255,255,.15);backdrop-filter:blur(4px)}
+.trozado-pill-kg{font-size:1.4rem;font-weight:900;color:white}
+
+/* ESTILO PIN */
+#pin-screen{position:fixed;inset:0;z-index:2000;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--verde)}
+.pin-dot.on{background:var(--verde);transform:scale(1.25)}
+.pin-grid{display:grid;grid-template-columns:repeat(3,74px);gap:11px}
+.pin-key{height:74px;background:white;border:1.5px solid var(--gris2);border-radius:14px;font-size:1.6rem;font-weight:700;cursor:pointer}
+
+#loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:3000}
+.spinner{width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid var(--verde);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
 
 <div id="pin-screen">
-    <div class="pin-logo">🐔 Avicola Don Daniel</div>
-    <div class="pin-sub" style="margin-bottom:20px; color:var(--gris3)">CLOUD SYNC ACTIVE</div>
-    <div class="pin-dots" id="pin-dots">
-        <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
-        <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="pin-grid">
-        <button class="pin-key" onclick="pinKey('1')">1</button><button class="pin-key" onclick="pinKey('2')">2</button><button class="pin-key" onclick="pinKey('3')">3</button>
-        <button class="pin-key" onclick="pinKey('4')">4</button><button class="pin-key" onclick="pinKey('5')">5</button><button class="pin-key" onclick="pinKey('6')">6</button>
-        <button class="pin-key" onclick="pinKey('7')">7</button><button class="pin-key" onclick="pinKey('8')">8</button><button class="pin-key" onclick="pinKey('9')">9</button>
-        <button class="pin-key" style="visibility:hidden"></button><button class="pin-key" onclick="pinKey('0')">0</button><button class="pin-key" onclick="pinDel()">⌫</button>
-    </div>
+  <div class="pin-logo" style="font-size: 2rem; font-weight: 800; color: var(--verde-dark);">🐔 Avicola Don Daniel</div>
+  <div class="pin-sub" style="margin-bottom:20px; color:var(--gris3)">INGRESA TU PIN</div>
+  <div class="pin-dots" id="pin-dots" style="display:flex; gap:14px; margin-bottom:32px;">
+    <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-grid">
+    <button class="pin-key" onclick="pinKey('1')">1</button><button class="pin-key" onclick="pinKey('2')">2</button><button class="pin-key" onclick="pinKey('3')">3</button>
+    <button class="pin-key" onclick="pinKey('4')">4</button><button class="pin-key" onclick="pinKey('5')">5</button><button class="pin-key" onclick="pinKey('6')">6</button>
+    <button class="pin-key" onclick="pinKey('7')">7</button><button class="pin-key" onclick="pinKey('8')">8</button><button class="pin-key" onclick="pinKey('9')">9</button>
+    <button class="pin-key" style="visibility:hidden"></button><button class="pin-key" onclick="pinKey('0')">0</button><button class="pin-key" onclick="pinDel()">⌫</button>
+  </div>
 </div>
 
 <div id="loading-overlay">
-    <div class="spinner"></div>
-    <p style="margin-top:15px; font-weight:bold">Sincronizando con Google Cloud...</p>
+  <div class="spinner"></div>
+  <p style="margin-top:15px; font-weight:bold">Conectando a la Nube...</p>
 </div>
-<div id="toast" class="toast"></div>
 
 <nav>
-    <div class="nav-header">
-        <div class="nav-title">🐔 Avicola Don Daniel</div>
-        <div class="db-badge">☁️ En Línea</div>
-    </div>
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="showTab('diario',this)">📊 Diario</button>
-        <button class="tab-btn" onclick="showTab('stock',this)">🧊 Stock</button>
-        <button class="tab-btn" onclick="showTab('desposte',this)">🥩 Desposte</button>
-        <button class="tab-btn" onclick="showTab('historial',this)">📅 Historial</button>
-        <button class="tab-btn" onclick="showTab('config',this)">⚙️ Precios</button>
-    </div>
+  <div class="nav-header">
+    <div class="nav-title">🐔 Avicola Don Daniel</div>
+    <div class="db-badge">☁️ CLOUD</div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showTab('diario',this)">📊 Diario</button>
+    <button class="tab-btn" onclick="showTab('stock',this)">🧊 Stock</button>
+    <button class="tab-btn" onclick="showTab('desposte',this)">🥩 Desposte</button>
+    <button class="tab-btn" onclick="showTab('historial',this)">📅 Historial</button>
+  </div>
 </nav>
 
 <div id="tab-diario" class="section active">
-    <div class="stock-hero">
-        <div class="stock-hero-label">🧊 Cajones Disponibles</div>
-        <div class="stock-hero-num" id="hero-stock">--</div>
-    </div>
-    <div id="ganancia-display" class="ganancia-box">
-        <div class="ganancia-monto" id="gan-monto">$0</div>
-        <div class="ganancia-sub" id="gan-sub">Ganancia estimada de hoy</div>
-    </div>
-    <div class="card">
-        <div class="input-group"><label>Cajones Cortados</label><input type="number" id="cajones" oninput="calcular()"></div>
-        <div class="input-group"><label>Venta Mostrador ($)</label><input type="number" id="venta-mostrador" oninput="calcular()"></div>
-        <div class="input-group"><label>Venta Enteros (Cajones)</label><input type="number" id="venta-enteros" oninput="calcular()"></div>
-        <button class="btn btn-verde" onclick="guardarDia()">💾 Guardar Todo</button>
-    </div>
+  <div class="stock-hero">
+    <div class="stock-hero-label" style="color:white; font-size:0.8rem">🧊 Cajones Disponibles</div>
+    <div class="stock-hero-num" id="hero-stock">--</div>
+  </div>
+
+  <div id="ganancia-display" class="ganancia-box">
+    <div class="ganancia-monto" id="gan-monto">$0</div>
+    <div class="ganancia-sub" style="color:white; font-size:0.8rem">Ganancia de Hoy</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Carga del día</div>
+    <div class="input-group"><label>Cajones Cortados</label><input type="number" id="cajones" oninput="calcular()"></div>
+    <div class="input-group"><label>Venta Mostrador ($)</label><input type="number" id="venta-mostrador" oninput="calcular()"></div>
+    <button class="btn btn-verde" onclick="guardarDia()">💾 GUARDAR EN NUBE</button>
+  </div>
 </div>
 
 <div id="tab-stock" class="section">
@@ -71,32 +127,9 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-title">📦 Cargar Compra</div>
-        <input type="number" id="s-compra-cajones" placeholder="Cajones">
+        <div class="card-title">📦 Sumar Cajones</div>
+        <input type="number" id="s-compra-cajones" placeholder="Cant. Cajones">
         <button class="btn btn-azul" onclick="cargarCompraStock()" style="margin-top:10px">Sumar al Stock</button>
-    </div>
-</div>
-
-<div id="tab-desposte" class="section">
-    <div class="card">
-        <div class="card-title">🥩 Nueva Tanda</div>
-        <div class="input-group"><label>Cajones</label><input type="number" id="des-cajones"></div>
-        <div class="row2">
-            <input type="number" id="des-sup" placeholder="Kg Suprema">
-            <input type="number" id="des-pym" placeholder="Kg P/M">
-        </div>
-        <button class="btn btn-cyan" onclick="guardarTanda()" style="margin-top:10px">💾 Procesar Desposte</button>
-    </div>
-</div>
-
-<div id="tab-historial" class="section">
-    <div id="historial-lista"></div>
-</div>
-
-<div id="tab-config" class="section">
-    <div class="card">
-        <div class="input-group"><label>Costo Cajón ($)</label><input type="number" id="cfg-costo"></div>
-        <button class="btn btn-verde" onclick="guardarConfig()">Actualizar</button>
     </div>
 </div>
 
@@ -115,20 +148,16 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
-    let state = { stock: 0, trozado: { sup: 0, pym: 0, ali: 0, men: 0 }, config: { costo: 61500, entero: 70000 } };
+    let state = { stock: 0, trozado: { sup: 0, pym: 0 }, config: { costo: 61500 } };
 
     async function init() {
         onSnapshot(doc(db, "app", "global"), (snap) => {
             if (snap.exists()) {
-                state.stock = snap.data().stock || 0;
-                state.trozado = snap.data().trozado || {sup:0, pym:0, ali:0, men:0};
-                state.config = snap.data().config || {costo:61500, entero:70000};
+                state = snap.data();
                 actualizarUI();
             }
             document.getElementById('loading-overlay').style.display = 'none';
         });
-        cargarHistorial();
     }
 
     window.showTab = (t, btn) => {
@@ -136,81 +165,40 @@
         document.getElementById('tab-' + t).classList.add('active');
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        if(t === 'historial') cargarHistorial();
     };
 
     function actualizarUI() {
-        document.getElementById('hero-stock').textContent = state.stock;
-        document.getElementById('st-sup').textContent = state.trozado.sup + ' kg';
-        document.getElementById('st-pym').textContent = state.trozado.pym + ' kg';
-        document.getElementById('cfg-costo').value = state.config.costo;
+        document.getElementById('hero-stock').textContent = state.stock || 0;
+        document.getElementById('st-sup').textContent = (state.trozado?.sup || 0) + ' kg';
+        document.getElementById('st-pym').textContent = (state.trozado?.pym || 0) + ' kg';
     }
 
     window.calcular = () => {
-        const cortados = parseFloat(document.getElementById('cajones').value) || 0;
-        const mostrador = parseFloat(document.getElementById('venta-mostrador').value) || 0;
-        const ganancia = mostrador - (cortados * state.config.costo);
-        document.getElementById('gan-monto').textContent = '$' + Math.round(ganancia).toLocaleString('es-AR');
+        const c = parseFloat(document.getElementById('cajones').value) || 0;
+        const m = parseFloat(document.getElementById('venta-mostrador').value) || 0;
+        const gan = m - (c * 61500);
+        document.getElementById('gan-monto').textContent = '$' + Math.round(gan).toLocaleString('es-AR');
     };
 
     window.guardarDia = async () => {
         const c = parseFloat(document.getElementById('cajones').value) || 0;
-        const m = parseFloat(document.getElementById('venta-mostrador').value) || 0;
-        const e = parseFloat(document.getElementById('venta-enteros').value) || 0;
-        const totalCaj = c + e;
-
-        if (state.stock < totalCaj) return alert("¡No hay suficiente stock!");
-
-        const ganancia = m + (e * state.config.entero) - (totalCaj * state.config.costo);
-        
-        await addDoc(collection(db, "historial"), {
-            fecha: new Date().toLocaleDateString('es-AR'),
-            cajones: c, enteros: e, ganancia: ganancia, ts: Date.now()
-        });
-
-        await updateDoc(doc(db, "app", "global"), { stock: state.stock - totalCaj });
-        alert("Día guardado en la nube ✓");
+        await updateDoc(doc(db, "app", "global"), { stock: state.stock - c });
+        alert("Guardado ✓");
     };
 
     window.cargarCompraStock = async () => {
         const cant = parseFloat(document.getElementById('s-compra-cajones').value) || 0;
         await updateDoc(doc(db, "app", "global"), { stock: state.stock + cant });
-        document.getElementById('s-compra-cajones').value = '';
     };
 
-    window.guardarTanda = async () => {
-        const caj = parseFloat(document.getElementById('des-cajones').value) || 0;
-        const s = parseFloat(document.getElementById('des-sup').value) || 0;
-        const p = parseFloat(document.getElementById('des-pym').value) || 0;
-        
-        await updateDoc(doc(db, "app", "global"), {
-            stock: state.stock - caj,
-            "trozado.sup": state.trozado.sup + s,
-            "trozado.pym": state.trozado.pym + p
-        });
-        alert("Desposte procesado y stock actualizado ✓");
-    };
-
-    async function cargarHistorial() {
-        const q = query(collection(db, "historial"), orderBy("ts", "desc"), limit(10));
-        const snap = await getDocs(q);
-        let h = '';
-        snap.forEach(d => {
-            const data = d.data();
-            h += `<div class="historia-item"><b>${data.fecha}</b> <span>$${data.ganancia.toLocaleString()}</span></div>`;
-        });
-        document.getElementById('historial-lista').innerHTML = h || 'Sin datos';
-    }
-
-    // PIN LOGIC
+    // PIN
     let pin = '';
     window.pinKey = (n) => {
-        if(pin.length < 4) pin += n;
+        pin += n;
         document.querySelectorAll('.pin-dot').forEach((d, i) => d.classList.toggle('on', i < pin.length));
         if(pin === '1234') document.getElementById('pin-screen').style.display = 'none';
-        else if(pin.length === 4) { pin = ''; document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('on')); }
+        else if(pin.length >= 4) pin = '';
     };
-    window.pinDel = () => { pin = pin.slice(0, -1); document.querySelectorAll('.pin-dot').forEach((d, i) => d.classList.toggle('on', i < pin.length)); };
 
     init();
 </script>
